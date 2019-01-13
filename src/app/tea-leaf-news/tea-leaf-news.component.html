@@ -1,0 +1,131 @@
+<div class="content">
+  <!-- 错误信息提示框 -->
+  <div class="tip-postion" *ngIf="isShowErrorTip">
+      <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-info-sign"></span>
+        <div class="w10"></div>{{errorMessage}}
+    </div>
+  </div>
+  <div class="h90"></div>
+  <div class="container">
+    <!-- 茶叶资讯表格 -->
+    <h3 class="text-center">茶叶资讯表&nbsp;&nbsp;<a href="/tea/download-xls"><span title="下载茶叶资讯表" class="fa fa-download"></span></a></h3>
+    <table class="table table-bordered table-hover table-striped">
+      <thead>
+        <tr>
+          <th width="10%">序号</th>
+          <th width="20%">茶叶名称</th>
+          <th width="20%">价格</th>
+          <th width="20%">热度（数值越大，热度越高）</th>
+          <th width="15%">起始时间</th>
+          <th width="15%">结束时间</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let teaLeafNews of teaLeafNewsList;let i = index">
+          <td>{{(pageNumForNews - 1) * pageSizeForNews + i + 1}}</td>
+          <td>{{teaLeafNews.teaLeafName}}</td>
+          <td>{{teaLeafNews.price}}元/斤</td>
+          <td>{{teaLeafNews.weight}}</td>
+          <td>{{teaLeafNews.startTime|date:'yyyy-MM-dd'}}</td>
+          <td>{{teaLeafNews.endTime|date:'yyyy-MM-dd'}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <nav aria-label="Page navigation" class="clearfix" style="padding-right:30px;">
+      <p-button class="pull-right" (onClick)="goPageForNews()" label="GO" style="margin: 5px;"></p-button>
+      <input type="text" class="form-control pull-right pagination-input" name="pageForSkipForNews" [(ngModel)]="pageForSkipForNews" (keypress)="removeChar($event)"/>
+      <span class="pull-right pagination-span">共{{totalForNews}}条/共{{pagesForNews}}页</span>
+      <ul class="pagination pull-right">
+        <li [class.disabled]="pageNumForNews === 1">
+          <a (click)="prePageForNews()" aria-label="Previous" class="cp">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li *ngIf="pageNumForNews === pagesForNews - 1 && pageNumForNews - 3 > 0"><a (click)="skipPageForNews(pageNumForNews - 3)" class="cp">{{pageNumForNews - 3}}</a></li>
+        <li *ngIf="pageNumForNews === pagesForNews && pageNumForNews - 4 > 0"><a (click)="skipPageForNews(pageNumForNews - 4)" class="cp">{{pageNumForNews - 4}}</a></li>
+        <li *ngIf="pageNumForNews === pagesForNews && pageNumForNews - 3 > 0"><a (click)="skipPageForNews(pageNumForNews - 3)" class="cp">{{pageNumForNews - 3}}</a></li>
+        <li *ngIf="pageNumForNews - 2 > 0"><a (click)="skipPageForNews(pageNumForNews - 2)" class="cp">{{pageNumForNews - 2}}</a></li>
+        <li *ngIf="pageNumForNews - 1 > 0"><a (click)="skipPageForNews(pageNumForNews - 1)" class="cp">{{pageNumForNews - 1}}</a></li>
+        <li class="active"><a (click)="skipPageForNews(pageNumForNews)" class="cp">{{pageNumForNews}}</a></li>
+        <li *ngIf="pageNumForNews + 1 <= pagesForNews"><a (click)="skipPageForNews(pageNumForNews + 1)" class="cp">{{pageNumForNews + 1}}</a></li>
+        <li *ngIf="pageNumForNews + 2 <= pagesForNews"><a (click)="skipPageForNews(pageNumForNews + 2)" class="cp">{{pageNumForNews + 2}}</a></li>
+        <li *ngIf="pageNumForNews === 1 && pageNumForNews + 3 <= pagesForNews"><a (click)="skipPageForNews(pageNumForNews + 3)" class="cp">{{pageNumForNews + 3}}</a></li>
+        <li *ngIf="pageNumForNews === 1 && pageNumForNews + 4 <= pagesForNews"><a (click)="skipPageForNews(pageNumForNews + 4)" class="cp">{{pageNumForNews + 4}}</a></li>
+        <li *ngIf="pageNumForNews === 2 && pageNumForNews + 3 <= pagesForNews"><a (click)="skipPageForNews(pageNumForNews + 3)" class="cp">{{pageNumForNews + 3}}</a></li>
+        <li [class.disabled]="pageNumForNews === pagesForNews">
+          <a (click)="nextPageForNews()" aria-label="Next" class="cp">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <div *ngIf="barData"><p-chart type="bar" [data]="barData"></p-chart></div>
+    <div class="h40"></div>
+    <div *ngIf="lineData"><p-chart type="line" [data]="lineData"></p-chart></div>
+    <div class="h40"></div>
+    <div class="row">
+      <div class="col-md-6">
+          <div *ngIf="pieData"><p-chart type="pie" [data]="pieData"></p-chart></div>
+      </div>
+      <div class="col-md-6">
+          <div *ngIf="polarAreaData"><p-chart type="polarArea" [data]="polarAreaData"></p-chart></div>
+      </div>
+    </div>
+    <div class="h40"></div>
+    <!-- 市场调研表 -->
+    <h3 class="text-center">市场调研表</h3>
+    <table class="table table-bordered table-hover table-striped">
+      <thead>
+        <tr>
+          <th width="5%">序号</th>
+          <th width="15%">茶叶名称</th>
+          <th width="10%">价格</th>
+          <th width="40%">地址</th>
+          <th width="10%">联系方式</th>
+          <th width="10%">调查时间</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let teaLeafData of teaLeafDataList;let i = index">
+          <td>{{(pageNum - 1) * pageSize + i + 1}}</td>
+          <td>{{teaLeafData.dataName}}</td>
+          <td>{{teaLeafData.price}}元/斤</td>
+          <td>{{teaLeafData.address}}</td>
+          <td>{{teaLeafData.phone}}</td>
+          <td>{{teaLeafData.surveyTime|date:'yyyy-MM-dd'}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <nav aria-label="Page navigation" class="clearfix" style="padding-right:30px;">
+      <p-button class="pull-right" (onClick)="goPage()" label="GO" style="margin: 5px;"></p-button>
+      <input type="text" class="form-control pull-right pagination-input" name="pageForSkip" [(ngModel)]="pageForSkip" (keypress)="removeChar($event)"/>
+      <span class="pull-right pagination-span">共{{total}}条/共{{pages}}页</span>
+      <ul class="pagination pull-right">
+        <li [class.disabled]="pageNum === 1">
+          <a (click)="prePage()" aria-label="Previous" class="cp">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li *ngIf="pageNum === pages - 1 && pageNum - 3 > 0"><a (click)="skipPage(pageNum - 3)" class="cp">{{pageNum - 3}}</a></li>
+        <li *ngIf="pageNum === pages && pageNum - 4 > 0"><a (click)="skipPage(pageNum - 4)" class="cp">{{pageNum - 4}}</a></li>
+        <li *ngIf="pageNum === pages && pageNum - 3 > 0"><a (click)="skipPage(pageNum - 3)" class="cp">{{pageNum - 3}}</a></li>
+        <li *ngIf="pageNum - 2 > 0"><a (click)="skipPage(pageNum - 2)" class="cp">{{pageNum - 2}}</a></li>
+        <li *ngIf="pageNum - 1 > 0"><a (click)="skipPage(pageNum - 1)" class="cp">{{pageNum - 1}}</a></li>
+        <li class="active"><a (click)="skipPage(pageNum)" class="cp">{{pageNum}}</a></li>
+        <li *ngIf="pageNum + 1 <= pages"><a (click)="skipPage(pageNum + 1)" class="cp">{{pageNum + 1}}</a></li>
+        <li *ngIf="pageNum + 2 <= pages"><a (click)="skipPage(pageNum + 2)" class="cp">{{pageNum + 2}}</a></li>
+        <li *ngIf="pageNum === 1 && pageNum + 3 <= pages"><a (click)="skipPage(pageNum + 3)" class="cp">{{pageNum + 3}}</a></li>
+        <li *ngIf="pageNum === 1 && pageNum + 4 <= pages"><a (click)="skipPage(pageNum + 4)" class="cp">{{pageNum + 4}}</a></li>
+        <li *ngIf="pageNum === 2 && pageNum + 3 <= pages"><a (click)="skipPage(pageNum + 3)" class="cp">{{pageNum + 3}}</a></li>
+        <li [class.disabled]="pageNum === pages">
+          <a (click)="nextPage()" aria-label="Next" class="cp">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+  <div class="h40"></div>
+  <app-footer></app-footer>
+</div>

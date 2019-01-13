@@ -1,0 +1,85 @@
+.content {
+    .head-title {
+        line-height: 34px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #5bc0de;
+    }
+    .table>tbody>tr>td {
+        vertical-align: middle !important;
+    }
+    .home-carousel-figure-img {
+        width: 110px;
+        height: auto;
+    }
+    .add-module,.modify-module {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: 5000;
+        width: 30%;
+        transform: translate(-50%, -50%);
+        .panel-heading {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .form-group {
+            .image-upload {
+                position: relative;
+                zoom: 1;
+                overflow: hidden; 
+                cursor: pointer;
+                background-color: #2399e5;
+                border-color: #2399e5;
+                span.upload-span {
+                    padding-left: 10px;
+                    font-weight: 550;
+                }
+            }
+            input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+                -webkit-appearance: none !important;
+                margin: 0;
+            }
+            input.image-input {
+                position: absolute;
+                top: 0;
+                right: 0;
+                margin: 0;
+                opacity: 0;
+                min-height: 100%;
+                font-size: 100px;
+                text-align: right;
+                filter: alpha(opacity=0);
+                direction: ltr;
+                cursor: pointer;
+            }
+            textarea {
+                height: 80px;
+                resize: none;
+            }
+        }
+    }
+    .delete-module {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: 5000;
+        width: 25%;
+        transform: translate(-50%, -50%);
+        .panel-heading,.panel-body {
+            text-align: center;
+        }
+        .panel-heading {
+            font-weight: bold;
+        }
+    }
+    .table {
+        table-layout: fixed;
+        .link {
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+    }
+}

@@ -1,0 +1,109 @@
+<!-- 错误信息提示框 -->
+<div class="tip-postion" *ngIf="isShowErrorTip">
+  <div class="alert alert-danger">
+    <span class="glyphicon glyphicon-info-sign"></span>
+    <div class="w10"></div>{{errorMessage}}
+  </div>
+</div>
+<!-- 成功信息提示框 -->
+<div class="tip-postion" *ngIf="isShowSuccessTip">
+    <div class="alert alert-success">
+      <span class="glyphicon glyphicon-ok"></span>
+      <div class="w10"></div>{{successMessage}}
+  </div>
+</div>
+<!-- 人物预览 -->
+<div id="myModal" class="modal">
+  <span class="close" (click)="closePreview()">×</span>
+  <img class="modal-content" [src]="previewUserInfo?.headSculptureUrl" alt="loading" width="350px;">
+  <div id="caption">性别：{{previewUserInfo?.sex}}<br>简介：{{previewUserInfo?.profile}}</div>
+</div>
+<div class="content" *ngIf="noticeDetail" style="background:#dceffe">
+  <div class="h90"></div>
+  <div class="container">
+    <div class="col-md-10 col-md-offset-1" style="border: 2px solid #ffffff;">
+      <div class="post-title clearfix">
+        <span style="line-height:34px;">{{post?.title}}</span>
+        <a class="btn btn-default pull-right" [routerLink]="['/home/post-detail', post?.postId]">查看原帖</a>
+      </div>
+      <div class="row" style="border-top: 2px solid #ffffff;border-bottom: 2px solid #ffffff;">
+        <div class="col-md-3 head-div">
+          <div class="text-center">
+            <div *ngIf="post" (click)="previewUser(post?.user)" class="head" [style.background-image]="'url(' + post?.user.headSculptureUrl + ')'"></div>
+            <p>{{post?.user.userName}}</p>
+          </div>
+        </div>
+        <div class="col-md-9" style="border-left: 2px solid #ffffff;">
+          <div [innerHtml]="post?.content" class="content-div"></div>
+          <div class="content-footer">
+            <span *ngIf="ownId === post?.user.userId"><a class="cp" (click)="deletePost()">删除</a>&nbsp;|&nbsp;</span>
+            主楼&nbsp;{{post?.createTime | date: 'yyyy-MM-dd HH:mm'}}&nbsp;&nbsp;&nbsp;
+          </div>
+        </div>
+      </div>
+      <!-- 评论区 -->
+      <div class="row" style="border-bottom: 2px solid #ffffff;" [style.background-color]="comment.commentId===commentId?'#f5f5f5' : 'transparent'">
+        <div class="media" style="padding:10px;overflow:visible">
+          <div class="media-left">
+            <a class="cp">
+              <div *ngIf="comment?.user" (click)="previewUser(comment?.user)" class="head" [style.background-image]="'url(' + comment?.user.headSculptureUrl + ')'"></div>
+            </a>
+          </div>
+          <div class="media-body">
+            <h4 class="media-heading">{{comment?.user.userName}}</h4>
+            <div class="comment-area" [innerHtml]="comment?.content"></div>
+            <div class="content-footer">
+              <span *ngIf="ownId === comment?.user.userId"><a class="cp" (click)="deleteComment(comment?.commentId)">删除</a>&nbsp;|&nbsp;</span>
+              &nbsp;{{comment?.createTime | date: 'yyyy-MM-dd HH:mm'}}&nbsp;&nbsp;&nbsp;
+              <a class="cp" (click)="toggleReplyInput(comment?.user.userId)">回复</a>
+            </div>
+            <!-- 回复显示区 -->
+            <div class="media" *ngFor="let reply of comment?.replyList" [style.background-color]="reply.replyId===replyId?'#f5f5f5' : 'transparent'">
+              <div class="media-left">
+                <a class="cp">
+                    <div class="head" (click)="previewUser(reply?.sendUser)" [style.background-image]="'url(' + reply?.sendUser.headSculptureUrl + ')'"></div>
+                </a>
+              </div>
+              <div class="media-body">
+                <h4 class="media-heading">{{reply?.sendUser.userName}}&nbsp;回复&nbsp;{{reply?.receiveUser.userName}}</h4>
+                <div [innerHtml]="reply?.content"></div>
+                <div class="content-footer">
+                  <span *ngIf="ownId === reply?.sendUser.userId"><a class="cp" (click)="deleteReply(reply?.replyId)">删除</a>&nbsp;|&nbsp;</span>
+                  {{reply?.createTime | date: 'yyyy-MM-dd HH:mm'}}&nbsp;&nbsp;&nbsp;
+                  <a class="cp" (click)="toggleReplyInput(reply?.sendUser.userId)">回复</a>
+                </div>
+              </div>
+            </div>
+            <!-- 回复区 -->
+            <div class="media">
+              <div class="media-body">
+                  <div contenteditable="plaintext-only" [innerHtml]="replyContent" (click)="hideReplyExpression()"
+                  style="box-sizing: content-box;word-wrap: break-word;" (blur)="replyDiv($event)" class="reply-input" id="replyInput"
+                  ></div>
+                  <div class="clearfix reply-div" id="replyDiv">
+                    <button class="btn btn-primary pull-right" (click)="addReply(comment?.commentId)">发表</button>
+                    <button class="btn expression-btn pull-right" (click)="toggleReplyExpression()">
+                      <span class="fa fa-smile-o"></span>&nbsp;<span class="caret"></span>
+                    </button>
+                    <div class="expression-reply" id="expressionReply">
+                      <table>
+                        <tbody>
+                          <tr *ngFor="let array of expressionArray">
+                            <td *ngFor="let expression of array" class="cp" (click)="addReplyExpression(expression)">
+                              <img src="{{expression}}" alt="loading"/>
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="height: 80px"></div>
+  <app-footer></app-footer>
+</div>

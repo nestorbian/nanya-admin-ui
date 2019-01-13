@@ -1,0 +1,160 @@
+<!-- loading -->
+<!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px'}"></ngx-loading> -->
+<div class="content">
+  <!-- 错误信息提示框 -->
+  <div class="tip-postion" *ngIf="isShowErrorTip">
+      <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-info-sign"></span>
+        <div class="w10"></div>{{errorMessage}}
+    </div>
+  </div>
+
+  <!-- 成功信息提示框 -->
+  <div class="tip-postion" *ngIf="isShowSuccessTip">
+      <div class="alert alert-success">
+        <span class="glyphicon glyphicon-ok"></span>
+        <div class="w10"></div>{{successMessage}}
+    </div>
+  </div>
+
+  <!-- 遮罩层 -->
+  <p-blockUI [blocked]="isShowBlock"></p-blockUI>
+
+  <!-- 添加泡茶技巧 -->
+  <div class="panel panel-default add-module" *ngIf="isShowAddModule">
+    <div class="panel-heading">
+      <span>添加泡茶文章模块</span>
+    </div>
+    <form (ngSubmit)="addTeaSkill()" #teaSkillForm="ngForm">
+      <div class="panel-body">
+        <div class="form-group">
+          <label for="title">标题<span class="red">*</span>:</label>
+          <input type="text" class="form-control" name="title" maxlength="30" [(ngModel)]="title" id="title"
+          #localTitle="ngModel" required placeholder="限30个字" [class.red-border]="localTitle.touched && localTitle.invalid"/>
+        </div>
+        <div class="form-group">
+          <label for="author">作者<span class="red">*</span>:</label>
+          <input type="text" class="form-control" name="author" maxlength="20" [(ngModel)]="author" id="author"
+          #localAuthor="ngModel" required placeholder="限20个字" [class.red-border]="localAuthor.touched && localAuthor.invalid"/>
+        </div>
+        <div class="form-group">
+          <label>内容<span class="red">*</span>:</label>
+          <p-editor [(ngModel)]="essay" [style]="{'height':'300px'}" required #localEssay="ngModel" name="essay"></p-editor>
+        </div>
+      </div>
+      <div class="panel-footer clearfix">
+        <button class="btn btn-default fr" type="button" (click)="cancelAddModule()">取消</button>
+        <button class="btn btn-info fr mr10" type="submit" [disabled]="!teaSkillForm.form.valid">保存</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- 修改轮播图 -->
+  <div class="panel panel-default modify-module" *ngIf="isShowModifyModule">
+    <div class="panel-heading">
+      <span>修改泡茶文章模块</span>
+    </div>
+    <form #modifyTeaSkill="ngForm" (ngSubmit)="modifyTeaSkillById()">
+      <div class="panel-body">
+        <div class="form-group">
+          <label for="title">标题<span class="red">*</span>:</label>
+          <input type="text" class="form-control" name="title" maxlength="30" [(ngModel)]="title" id="title"
+          #localTitle="ngModel" required placeholder="限30个字" [class.red-border]="localTitle.touched && localTitle.invalid"/>
+        </div>
+        <div class="form-group">
+          <label for="author">作者<span class="red">*</span>:</label>
+          <input type="text" class="form-control" name="author" maxlength="20" [(ngModel)]="author" id="author"
+          #localAuthor="ngModel" required placeholder="限20个字" [class.red-border]="localAuthor.touched && localAuthor.invalid"/>
+        </div>
+        <div class="form-group">
+          <label>内容<span class="red">*</span>:</label>
+          <p-editor [(ngModel)]="essay" [style]="{'height':'300px'}" required #localEssay="ngModel" name="essay"></p-editor>
+        </div>
+      </div>
+      <div class="panel-footer clearfix">
+        <button class="btn btn-default fr" type="button" (click)="cancelModifyModule()">取消</button>
+        <button class="btn btn-info fr mr10" type="submit" [disabled]="!modifyTeaSkill.form.valid">保存</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- 删除模块 -->
+  <div class="panel panel-danger delete-module" *ngIf="isShowDeleteModule">
+    <div class="panel-heading">确定要删除该泡茶文章吗？</div>
+    <div class="panel-body">
+      <button class="btn btn-info" (click)="confirmDeleteTeaSkill()">确定</button>
+      <div class="w10"></div>
+      <button class="btn btn-default" (click)="cancelDeleteModule()">取消</button>
+    </div>
+  </div>
+
+  <!-- 轮播图管理标题 -->
+  <div class="head clearfix">
+    <span class="head-title">泡茶技巧管理</span>
+    <button class="btn btn-info fr" (click)="isShowAddModule=true;isShowBlock=true"><span class="fa fa-plus"></span>&nbsp;添加</button>
+  </div>
+  <hr />
+  <!-- 轮播图表格 -->
+  <table class="table table-bordered table-hover table-striped">
+    <thead>
+      <tr>
+        <th width="5%">序号</th>
+        <th width="15%">文章标题</th>
+        <th width="10%">作者</th>
+        <th width="35%">文章内容</th>
+        <th width="12%">创建时间</th>
+        <th width="13%">更新时间</th>
+        <th width="10%">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let teaSkill of teaSkillList;let i = index">
+        <td>{{(pageNum - 1) * pageSize + i + 1}}</td>
+        <td>{{teaSkill.title}}</td>
+        <td>{{teaSkill.author}}</td>
+        <!-- <td><div class="essay" [innerHtml]="teaSkill.essay"></div></td> -->
+        <td class="tea-skill-essay" title="{{teaSkill.essay}}">{{teaSkill.essay}}</td>
+        <td>{{teaSkill.createTime}}</td>
+        <td>{{teaSkill.updateTime}}</td>
+        <td>
+          <button class="btn btn-warning" (click)="showModifyModule(teaSkill.teaSkillId)">
+            <span class="glyphicon glyphicon-edit"></span>
+          </button>
+          <button class="btn btn-danger" (click)="deleteTeaSkill(teaSkill.teaSkillId)">
+            <span class="glyphicon glyphicon-trash"></span>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <!-- <nav aria-label="Page navigation">
+    <ul class="pager">
+      <li class="previous cp"><a (click)="prePage()"><span aria-hidden="true">&larr;</span>上一页 </a></li>
+      <li><span>当前第{{pageNum}}页&nbsp;共{{pages}}页</span></li>
+      <li class="next cp"><a (click)="nextPage()">下一页 <span aria-hidden="true">&rarr;</span></a></li>
+    </ul>
+  </nav> -->
+  <nav aria-label="Page navigation" class="clearfix" style="padding-right:30px;">
+    <p-button class="pull-right" (onClick)="goPage()" label="GO" style="margin: 5px;"></p-button>
+    <input type="text" class="form-control pull-right pagination-input" name="pageForSkip" [(ngModel)]="pageForSkip" (keypress)="removeChar($event)"/>
+    <span class="pull-right pagination-span">共{{total}}条/共{{pages}}页</span>
+    <ul class="pagination pull-right">
+      <li [class.disabled]="pageNum === 1">
+        <a (click)="prePage()" aria-label="Previous" class="cp">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      <li *ngIf="pageNum - 2 > 0"><a (click)="skipPage(pageNum - 2)" class="cp">{{pageNum - 2}}</a></li>
+      <li *ngIf="pageNum - 1 > 0"><a (click)="skipPage(pageNum - 1)" class="cp">{{pageNum - 1}}</a></li>
+      <li class="active"><a (click)="skipPage(pageNum)" class="cp">{{pageNum}}</a></li>
+      <li *ngIf="pageNum + 1 <= pages"><a (click)="skipPage(pageNum + 1)" class="cp">{{pageNum + 1}}</a></li>
+      <li *ngIf="pageNum + 2 <= pages"><a (click)="skipPage(pageNum + 2)" class="cp">{{pageNum + 2}}</a></li>
+      <li [class.disabled]="pageNum === pages">
+        <a (click)="nextPage()" aria-label="Next" class="cp">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+</div>
+

@@ -1,0 +1,63 @@
+<div class="content">
+      <!-- 错误信息提示框 -->
+    <div class="tip-postion" *ngIf="isShowErrorTip">
+        <div class="alert alert-danger">
+          <span class="glyphicon glyphicon-info-sign"></span>
+          <div class="w10"></div>{{errorMessage}}
+      </div>
+    </div>
+  
+    <!-- 成功信息提示框 -->
+    <div class="tip-postion" *ngIf="isShowSuccessTip">
+        <div class="alert alert-success">
+          <span class="glyphicon glyphicon-ok"></span>
+          <div class="w10"></div>{{successMessage}}
+      </div>
+    </div>
+  
+    <!-- 遮罩层 -->
+    <p-blockUI [blocked]="isShowBlock"></p-blockUI>
+
+      <!-- 删除模块 -->
+    <div class="panel panel-danger delete-module" *ngIf="isShowDeleteModule">
+        <div class="panel-heading">确定要删除该主流茶信息吗？</div>
+        <div class="panel-body">
+          <button class="btn btn-info" (click)="confirmDeleteWellKnownTea()">确定</button>
+          <div class="w10"></div>
+          <button class="btn btn-default" (click)="cancelDeleteModule()">取消</button>
+        </div>
+    </div>
+
+  <!-- 主流茶card -->
+    <div class="head clearfix">
+        <span class="head-title">主流茶管理</span>
+        <button class="btn btn-info fr" [routerLink]="['/home-admin/add-well-known-tea']"><span class="fa fa-plus"></span>&nbsp;添加</button>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-md-4 col-sm-6 col-lg-3" *ngFor="let wellKnownTea of wellknownTeaList">
+            <p-card title="{{wellKnownTea.wellKnownTeaName}}" subtitle="{{wellKnownTea.productionPlace}}" [style]="{width: '100%'}" styleClass="ui-card-shadow">
+                <p-header>
+                    <div class="img-div" [style.background-image]="'url(' + wellKnownTea.teaImages[0].imageUrl + ')'"></div>
+                    <!-- <img src="Card" src="{{wellKnownTea.teaImages[0].imageUrl}}"> -->
+                </p-header>
+                <div>
+                    {{wellKnownTea.description}}
+                </div>
+                <p-footer>
+                    <button pButton type="button" label="编辑" icon="fa-edit" (click)="editWellKnownTea(wellKnownTea.wellKnownTeaId)"></button>
+                    <button pButton type="button" label="删除" icon="fa-close" class="ui-button-secondary" (click)="deleteWellKnownTea(wellKnownTea.wellKnownTeaId)"></button>
+                </p-footer>
+            </p-card>
+        </div>
+    </div>
+    <div>
+        <nav aria-label="Page navigation">
+            <ul class="pager">
+                <li class="previous cp" [class.disabled]="pageNum === 1"><a (click)="prePage()"><span aria-hidden="true">&larr;</span>上一页 </a></li>
+                <li><span>当前第{{pageNum}}页&nbsp;共{{pages}}页</span></li>
+                <li class="next cp" [class.disabled]="pageNum === pages"><a (click)="nextPage()">下一页 <span aria-hidden="true">&rarr;</span></a></li>
+            </ul>
+        </nav>
+    </div>
+</div>

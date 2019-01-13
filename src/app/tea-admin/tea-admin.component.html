@@ -1,0 +1,116 @@
+<!-- 错误信息提示框 -->
+<div class="tip-postion" *ngIf="isShowErrorTip">
+    <div class="alert alert-danger">
+      <span class="glyphicon glyphicon-info-sign"></span>
+      <div class="w10"></div>{{errorMessage}}
+  </div>
+</div>
+<!-- 导航条 -->
+<div class="navbar-admin" [style.background-color]="topSkin">
+  <div class="navbar-container clearfix">
+      <div class="pull-right">
+        <span class="fa fa-sign-out cp" (click)="logout()"></span>
+      </div>
+      <div class="welcome-admin">
+          <img src="/assets/images/timg.jpg" alt="loading" class="img-circle head-img">
+          <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{admin?.adminName}}
+            </button>
+          </div>
+      </div>
+      <div class="pull-right">
+        <span class="fa fa-bell cp"></span>
+      </div>
+      <!-- <div class="function-area">
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Search" aria-describedby="basic-addon2">
+          <span class="input-group-addon" id="basic-addon2"><span class="glyphicon glyphicon-search"></span></span>
+        </div>
+      </div> -->
+  </div>
+</div>
+<div class="body">
+  <!-- 菜单栏 -->
+    <div class="layout-menu-wrapper" [style.background-image]="'url(' + menuSkin + ')'">
+      <div class="sidebar-logo" [style.background-color]="titleSkin">
+        <div class="brand"><span class="fa fa-envira fa-3x"></span>茶道管理平台</div>
+      </div>
+        <p-scrollPanel [style]="{width: 'calc(100% + 2px)',border: 'none', height: 'calc(100% + 18px)', overflow: 'scrollbars-none', background: 'transparent'}" styleClass="custom">
+        <ul class="menu-ul">
+          <li>
+            <a (click)="showChildMenu()" [ngClass]="{'active-a': isShowChildMenu, 'inactive-a': !isShowChildMenu}">主页管理
+              <span class="glyphicon glyphicon-home"></span><span class="glyphicon glyphicon-menu-down menu-down"></span>
+            </a>
+            <ul [ngClass]="{'child-ul': isShowChildMenu, 'close-child-ul': !isShowChildMenu}" style="margin-top:0;">
+              <li>
+                <a (click)="clearActive();carouselFigureActive=true;isShowChildMenu=true" [class.item-active]="carouselFigureActive" [routerLink]="['/home-admin/carousel-figure']">
+                  轮播图<span class="fa fa-laptop"></span>
+                </a>
+              </li>
+              <li>
+                <a (click)="clearActive();wellKnownTeaActive=true;isShowChildMenu=true" [class.item-active]="wellKnownTeaActive" [routerLink]="['/home-admin/well-known-tea']">
+                  主流茶<span class="fa fa-leaf"></span>
+                </a>
+              </li>
+              <!-- <li>
+                <a (click)="clearActive();tenFamousTeaActive=true;" [class.item-active]="tenFamousTeaActive">十大名茶
+                  <span class="fa fa-tree"></span>
+                </a>
+              </li> -->
+            </ul>
+          </li>
+          <li>
+            <a (click)="clearActive();teaSetNewsActive=true;" [ngClass]="{'active-a': teaSetNewsActive, 'inactive-a': !teaSetNewsActive}"
+            [routerLink]="['/home-admin/tea-set-news']">
+            茶具新资讯<span class="glyphicon glyphicon-th-large"></span>
+            </a>
+          </li>
+          <li><a (click)="clearActive();teaSkillActive=true;" [ngClass]="{'active-a': teaSkillActive, 'inactive-a': !teaSkillActive}"
+            [routerLink]="['/home-admin/tea-skill']">泡茶技巧<span class="glyphicon glyphicon-list-alt"></span></a></li>
+          <li><a (click)="clearActive();teaLeafNewsActive=true;" [ngClass]="{'active-a': teaLeafNewsActive, 'inactive-a': !teaLeafNewsActive}"
+            [routerLink]="['/home-admin/tea-leaf-news']">茶叶资讯<span class="glyphicon glyphicon-cog"></span></a></li>
+          <li><a (click)="clearActive();postActive=true;" [ngClass]="{'active-a': postActive, 'inactive-a': !postActive}"
+            [routerLink]="['/home-admin/post']">交流区<span class="fa fa-comments-o" style="font-size: 19px;"></span></a></li>
+          <li><a (click)="clearActive();userActive=true;" [ngClass]="{'active-a': userActive, 'inactive-a': !userActive}"
+            [routerLink]="['/home-admin/user-info']">用户管理<span class="glyphicon glyphicon-user"></span></a></li>
+          <li>
+            <a (click)="showChildSettingMenu()" [ngClass]="{'active-a': isShowChildSettingMenu, 'inactive-a': !isShowChildSettingMenu}">个性设置
+                <span class="glyphicon glyphicon-cog"></span>
+                <span class="glyphicon glyphicon-menu-down menu-down"></span>
+            </a>
+            <ul [ngClass]="{'child-setting-ul': isShowChildSettingMenu, 'close-child-ul': !isShowChildSettingMenu}" style="margin-top:0;">
+              <li>
+                <a (click)="clearActive();defaultSkinActive=true;isShowChildSettingMenu=true" [class.item-active]="defaultSkinActive" 
+                (click)="modifySkin('/assets/images/bg-palm-light.png', '#00bcd4', 'transparent')">
+                  默认<span class="fa fa-paint-brush"></span>
+                </a>
+              </li>
+              <li>
+                <a (click)="clearActive();citySkinActive=true;isShowChildSettingMenu=true" [class.item-active]="citySkinActive" 
+                (click)="modifySkin('/assets/images/bg-cityscape-light.png', '#E64A19', '#521e1f')">
+                  城市风<span class="fa fa-paint-brush"></span>
+                </a>
+              </li>
+              <li>
+                <a (click)="clearActive();cloudySkinActive=true;isShowChildSettingMenu=true" [class.item-active]="cloudySkinActive" 
+                (click)="modifySkin('/assets/images/bg-cloudy-light.png', '#009688', '#00bab8')">
+                  清新风<span class="fa fa-paint-brush"></span>
+                </a>
+              </li>
+              <li>
+                <a (click)="clearActive();palmSkinActive=true;isShowChildSettingMenu=true" [class.item-active]="palmSkinActive" 
+                (click)="modifySkin('/assets/images/bg-moody-light.png', '#607D8B', 'rgba(36, 50, 59, 0.5)')">
+                  忧伤风<span class="fa fa-paint-brush"></span>
+                </a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </p-scrollPanel>
+    </div>
+  <div class="h90"></div>
+  <div style="margin-left: 265px;margin-right: 15px;">
+    <router-outlet></router-outlet>
+  </div>
+</div>

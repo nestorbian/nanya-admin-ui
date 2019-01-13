@@ -1,0 +1,169 @@
+<!-- loading -->
+<!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '14px'}"></ngx-loading> -->
+<div class="content">
+    <!-- 错误信息提示框 -->
+    <div class="tip-postion" *ngIf="isShowErrorTip">
+        <div class="alert alert-danger">
+          <span class="glyphicon glyphicon-info-sign"></span>
+          <div class="w10"></div>{{errorMessage}}
+      </div>
+    </div>
+  
+    <!-- 成功信息提示框 -->
+    <div class="tip-postion" *ngIf="isShowSuccessTip">
+        <div class="alert alert-success">
+          <span class="glyphicon glyphicon-ok"></span>
+          <div class="w10"></div>{{successMessage}}
+      </div>
+    </div>
+  
+    <!-- 遮罩层 -->
+    <p-blockUI [blocked]="isShowBlock"></p-blockUI>
+  
+    <!-- 添加茶具 -->
+    <div class="panel panel-default add-module" *ngIf="isShowAddModule">
+      <div class="panel-heading">
+        <span>添加轮播图模块</span>
+      </div>
+      <form (ngSubmit)="addTeaSetNews()" #teaSetForm="ngForm">
+        <div class="panel-body">
+          <div class="form-group">
+            <label>茶具图片:</label><br/>
+            <a class="btn btn-primary image-upload">
+              <span [class]="uploadFont"></span><span class="upload-span">{{imageFileName}}</span>
+              <input type="file" accept="image/*" class="image-input" (change)="onImageUpload($event)" name="imageFile"/>
+            </a>
+          </div>
+          <div class="form-group">
+            <label class="teaSetName">茶具名称:</label>
+            <input type="text" class="form-control" name="teaSetName" maxlength="30" [(ngModel)]="teaSetName" id="teaSetName"
+            #localTeaSetName="ngModel" required placeholder="限30个字" [class.red-border]="localTeaSetName.touched && localTeaSetName.invalid"/>
+          </div>
+          <div class="form-group">
+            <label for="price">价格:</label>
+            <input type="number" class="form-control" name="price" [(ngModel)]="price" #localPrice="ngModel" id="price" placeholder="限两位小数"
+             required [class.red-border]="localPrice.touched && localPrice.invalid" (keypress)="removeChar($event)" (input)="removeInvalid($event)"/>
+          </div>
+          <div class="form-group">
+            <label for="description">描述:</label>
+            <textarea class="form-control" name="description" maxlength="250" [(ngModel)]="description" id="description"
+            #localDescription="ngModel" required placeholder="限250个字" [class.red-border]="localDescription.touched && localDescription.invalid">
+            </textarea>
+          </div>
+          <div class="form-group">
+              <label for="goodUrl">购买链接:</label>
+              <input type="text" class="form-control" name="goodUrl" [(ngModel)]="goodUrl" #localGoodUrl="ngModel" id="goodUrl" placeholder="限200个字"
+               required [class.red-border]="localGoodUrl.touched && localGoodUrl.invalid" />
+          </div>
+        </div>
+        <div class="panel-footer clearfix">
+          <button class="btn btn-default fr" type="button" (click)="cancelAddModule()">取消</button>
+          <button class="btn btn-info fr mr10" type="submit" [disabled]="!teaSetForm.form.valid">保存</button>
+        </div>
+      </form>
+    </div>
+  
+    <!-- 修改茶具 -->
+    <div class="panel panel-default modify-module" *ngIf="isShowModifyModule">
+      <div class="panel-heading">
+        <span>修改轮播图模块</span>
+      </div>
+      <form (ngSubmit)="modifyTeaSetNews()" #modifyTeaSetForm="ngForm">
+        <div class="panel-body">
+          <div class="form-group">
+            <label>茶具图片:</label><br/>
+            <a class="btn btn-primary image-upload">
+              <span [class]="uploadFont"></span><span class="upload-span">{{imageFileName}}</span>
+              <input type="file" accept="image/*" class="image-input" (change)="onImageUpload($event)" name="imageFile"/>
+            </a>
+          </div>
+          <div class="form-group">
+            <label>茶具名称:</label>
+            <input type="text" class="form-control" name="teaSetName" maxlength="30" [(ngModel)]="teaSetName" 
+            #localTeaSetName="ngModel" required placeholder="限30个字" [class.red-border]="localTeaSetName.touched && localTeaSetName.invalid"/>
+          </div>
+          <div class="form-group">
+            <label for="price">价格:</label>
+            <input type="number" class="form-control" name="price" [(ngModel)]="price" #localPrice="ngModel" id="price" placeholder="限两位小数"
+              required [class.red-border]="localPrice.touched && localPrice.invalid" (keypress)="removeChar($event)" (input)="removeInvalid($event)"/>
+          </div>
+          <div class="form-group">
+            <label for="description">描述:</label>
+            <textarea class="form-control" name="description" maxlength="250" [(ngModel)]="description" id="description"
+            #localDescription="ngModel" required placeholder="限250个字" [class.red-border]="localDescription.touched && localDescription.invalid">
+            </textarea>
+          </div>
+          <div class="form-group">
+              <label for="goodUrl">购买链接:</label>
+              <input type="text" class="form-control" name="goodUrl" [(ngModel)]="goodUrl" #localGoodUrl="ngModel" id="goodUrl" placeholder="限200个字"
+               required [class.red-border]="localGoodUrl.touched && localGoodUrl.invalid" />
+          </div>
+        </div>
+        <div class="panel-footer clearfix">
+          <button class="btn btn-default fr" type="button" (click)="cancelModifyModule()">取消</button>
+          <button class="btn btn-info fr mr10" type="submit" [disabled]="!modifyTeaSetForm.form.valid">保存</button>
+        </div>
+      </form>
+    </div>
+  
+    <!-- 删除模块 -->
+    <div class="panel panel-danger delete-module" *ngIf="isShowDeleteModule">
+      <div class="panel-heading">确定要删除该轮播信息吗？</div>
+      <div class="panel-body">
+        <button class="btn btn-info" (click)="confirmDeleteTeaSetNews()">确定</button>
+        <div class="w10"></div>
+        <button class="btn btn-default" (click)="cancelDeleteModule()">取消</button>
+      </div>
+    </div>
+  
+    <!-- 茶具管理标题 -->
+    <div class="head clearfix">
+      <span class="head-title">茶具资讯管理</span>
+      <button class="btn btn-info fr" (click)="isShowAddModule=true;isShowBlock=true"><span class="fa fa-plus"></span>&nbsp;添加</button>
+    </div>
+    <hr />
+    <!-- 茶具表格 -->
+    <table class="table table-bordered table-hover table-striped">
+      <thead>
+        <tr>
+          <th width="5%">序号</th>
+          <th width="15%">茶具图片</th>
+          <th width="10%">茶具名称</th>
+          <th width="6%">茶具价格</th>
+          <th width="15%">茶具描述</th>
+          <th width="15%">茶具购买链接</th>
+          <th width="12%">创建时间</th>
+          <th width="12%">更新时间</th>
+          <th width="10%">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let teaSetNews of teaSetNewsList;let i = index">
+          <td>{{i + 1}}</td>
+          <td><img class="home-carousel-figure-img" [src]="sanitizer.bypassSecurityTrustUrl(teaSetNews.imageUrl)" alt="loading"/></td>
+          <td>{{teaSetNews.teaSetName}}</td>
+          <td>{{teaSetNews.price}}</td>
+          <td>{{teaSetNews.description}}</td>
+          <td class="link"><a href="{{teaSetNews.goodUrl}}" target="_blank">{{teaSetNews.goodUrl}}</a></td>
+          <td>{{teaSetNews.createTime}}</td>
+          <td>{{teaSetNews.updateTime}}</td>
+          <td>
+            <button class="btn btn-warning" (click)="showModifyModule(teaSetNews)">
+              <span class="glyphicon glyphicon-edit"></span>
+            </button>
+            <button class="btn btn-danger" (click)="deleteTeaSetNews(teaSetNews.teaSetId)">
+              <span class="glyphicon glyphicon-trash"></span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <nav aria-label="Page navigation">
+      <ul class="pager">
+        <li class="previous cp" [class.disabled]="pageNum === 1"><a (click)="prePage()"><span aria-hidden="true">&larr;</span>上一页 </a></li>
+        <li><span>当前第{{pageNum}}页&nbsp;共{{pages}}页</span></li>
+        <li class="next cp" [class.disabled]="pageNum === pages"><a (click)="nextPage()">下一页 <span aria-hidden="true">&rarr;</span></a></li>
+      </ul>
+    </nav>
+  </div>
+  

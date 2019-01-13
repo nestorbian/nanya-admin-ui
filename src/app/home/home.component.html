@@ -1,0 +1,134 @@
+<div class="content">
+  <!-- 错误信息提示框 -->
+  <div class="tip-postion" *ngIf="isShowErrorTip">
+      <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-info-sign"></span>
+        <div class="w10"></div>{{errorMessage}}
+    </div>
+  </div>
+  <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators" *ngIf="homeCarouselFigureList">
+        <li *ngIf="homeCarouselFigureList[0]" data-target="#carousel-example-generic" class="active" data-slide-to="0"></li>
+        <li *ngIf="homeCarouselFigureList[1]" data-target="#carousel-example-generic" data-slide-to="1"></li>
+        <li *ngIf="homeCarouselFigureList[2]" data-target="#carousel-example-generic" data-slide-to="2"></li>
+        <li *ngIf="homeCarouselFigureList[3]" data-target="#carousel-example-generic" data-slide-to="3"></li>
+        <li *ngIf="homeCarouselFigureList[4]" data-target="#carousel-example-generic" data-slide-to="4"></li>
+        <li *ngIf="homeCarouselFigureList[5]" data-target="#carousel-example-generic" data-slide-to="5"></li>
+        <li *ngIf="homeCarouselFigureList[6]" data-target="#carousel-example-generic" data-slide-to="6"></li>
+        <li *ngIf="homeCarouselFigureList[7]" data-target="#carousel-example-generic" data-slide-to="7"></li>
+        <li *ngIf="homeCarouselFigureList[8]" data-target="#carousel-example-generic" data-slide-to="8"></li>
+        <li *ngIf="homeCarouselFigureList[9]" data-target="#carousel-example-generic" data-slide-to="9"></li>
+    </ol>
+    
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner" role="listbox">
+        <div *ngFor="let homeCarouselFigure of homeCarouselFigureList;let i = index" class="item" [class.active]="i == 0" >
+            <!-- <img src="{{homeCarouselFigure.carouselFigureImageUrl}}" alt="loading"> -->
+            <div class="carousel-figure" [style.background-image]="'url(' + homeCarouselFigure.carouselFigureImageUrl + ')'"></div>
+            <div class="carousel-caption">
+                <h1>{{homeCarouselFigure.carouselFigureTitle}}</h1>
+                <p>{{homeCarouselFigure.carouselFigureContent}}</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Controls -->
+    <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+    </a>
+  </div>
+  <div class="container">
+    <!-- <hr style="margin: 40px 0px;"/> -->
+    <div class="row">
+        <h2 class="text-center">中国茶史</h2>
+        <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+            <div class="caption">
+            <h3>茶史概述</h3>
+            <p class="caption-content">中国是茶的原产地。中国人对茶的熟悉，上至帝王将相，文人墨客，诸子百家，下至挑夫贩夫，平民百姓，无不以茶为好。人们常说：“开门七件事，柴米油盐酱醋茶”。
+                由此可见茶已深入人民各阶层。同样少数民族也好茶，藏族的酥油茶，蒙古族的奶茶。茶以文化面貌出现，是在两晋北朝。若论其起源就要追溯到汉代，有正式文献记
+                载（汉人王褒所写《僮约》）。最早喜好饮茶的多是文人雅仕。在我国文学史上，提起汉赋，首推司马相如与杨雄，且都是早期著名茶人。司马相如曾作《凡将篇》、
+                杨雄作《方言》，一个从药用，一个从文学角度都谈到茶。晋代张载曾写《登成都楼诗》：“借问杨子舍，想见长卿庐”，“芳茶冠六情，溢味播九区”。茶文化产生之初
+                是由儒家积极入世的思想开始的。两晋北朝时，一些有眼光的政治家便提出“以茶养廉”，以对抗当时的奢侈之风。魏晋以来，天下骚乱，文人无以匡世，渐兴清淡之风。
+                这些人终日高谈阔论，必有助兴之物，于是多兴饮宴，所以最初的清淡家多酒徒。如：竹林七贤。后来清淡之风发展到一般文人，但能豪饮终日不醉的毕竟是少数，而
+                茶则可长饮且始终保持清醒，于是清淡家们就转向好茶。所以后期出现了许多好茶人。
+            </p>
+            <p><a href="#" class="btn btn-primary" role="button" [routerLink]="['/home/tea-history']">了解更多</a></p>
+            </div>
+        </div>
+        </div>
+      <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+          <div class="caption">
+            <h3>发展时间</h3>
+            <p class="caption-content">中国饮茶始于西汉有史可据，但在西汉时期，中国只有四川一带饮茶，西汉对茶作过记录的司马相如、王褒、杨雄均是四川人。两汉时期，茶作为四川的特产，通过
+                进贡的渠道，首先传到京都长安，并逐渐向当时的政治、经济、文化中心陕西、河南等北方地区传播；另一方面，四川的饮茶风尚沿水路顺长江而传播到长江中下
+                游地区。从西汉直到三国时期，在巴蜀之外，茶是供上层社会享用的珍稀之品，饮茶限于王公朝士，民间可能很少饮茶。南朝宋何法盛《晋中兴书》记："陆纳为吴
+                兴太首时，卫将军谢安常欲诣纳，……安既至，所设唯茶果而已"。西晋刘琨《与兄子南州刺史演书》有："吾体中烦闷，恒假真茶，可信致之"。晋左思《娇女诗》有
+                ："止为茶荈剧，吹嘘对鼎砺"。南朝宋刘义庆《世语新说·轻诋第二十六》记："褚太傅初渡江。……刺左右多与茗汁"。又《纰漏第三十四》载："任问人云，此为茶
+                为茗。"两晋时期，江南一带，"做席竟下饮"，文人士大夫间流行饮茶，民间亦有饮茶。南朝梁萧子显《南方书·武帝本纪》："我灵慎勿的牲为祭。唯设饼、茶饮、
+                干饭、酒脯而已。"《释道该说续名僧传》："宋释法瑶，姓杨氏，河东人。……年垂悬车，饭所饮茶。"《宋录》："新安王子鸾，豫章王子尚诣昙济道人于八公山，
+                道人设茶茗。子尚味之曰：此甘露也，何言茶茗。"后魏杨衡之《洛阳伽蓝记》卷三城南报德寺："（王）肃初入国，不食羊肉及酪浆等物。常饭鲫鱼羹，渴饮茗汁。
+                ……时给事刘镐，慕肃之风，专习茗饮。"南朝宋山谦之《吴兴记》有"乌程温度，出御荈"，"长兴啄木岑，每岁吴兴、昆陵二郡太守才茶宴会于此，有境会亭。"南北朝
+                时期，帝王公卿、文人道流，茶风较晋更浓。吴兴有御茶园，采茶时节二郡太守宴集，大概是督造茶叶，上贡朝廷。
+            </p>
+            <p><a href="#" class="btn btn-primary" role="button" [routerLink]="['/home/tea-history']">了解更多</a></p>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-6 col-md-4">
+        <div class="thumbnail">
+          <div class="caption">
+            <h3>发源地点</h3>
+            <p class="caption-content" style="white-space: pre-line;">
+                    对这一点的探求往往集中在茶树的发源地的研究上来。关于茶树的发源地，有这么几种说法：
+                    西南说
+                    “我国西南部是茶树的原产地和茶叶发源地。”这一说法所指的范围很大，所以正确性就较高了。
+                    四川说
+                    清·顾炎武《日知录》：“自秦人取蜀以后，始有茗饮之事。”言下之意，秦人入蜀前，今四川一带已知饮茶。其实四川就在西南，四川说成立，那么西南说就成立了。四川说要比西南说“精密”一些，但是正确的风险性会大些。
+                    云南说
+                    认为云南的西双版纳一带是茶树的发源地，这一带是植物的王国，有原生的茶树种类存在完全是可能的，但是这一说法具有“人文”方面的风险，因为茶树是可以原生的，而茶则是活化劳动的成果。
+                    川东鄂西说
+                    陆羽《茶经》：“其巴山峡川，有两人合抱者。”巴山峡川即今川东鄂西。该地有如此出众的茶树，是否就有人将其利用成为了茶叶，没有见到证据。
+                    江浙说
+                    最近有人提出始于以河姆渡文化为代表的古越族文化。江浙一带目前是我国茶叶行业最为发达的地区，历史若能够在此生根，倒是很有意义的话题。
+                    其实我认为在远古时期肯定不只一个地方有自然起源的茶树存在。有茶树的地方也不一定就能够发展出饮茶的习俗来。前面说到茶是神农发明的，那么它在哪一带活动？如果我们求得“茶树原生地”与“神农活动地”的交集，也许就有答案了，至少是缩小了答案的“值域”。
+            </p>
+            <p><a href="#" class="btn btn-primary" role="button" [routerLink]="['/home/tea-history']">了解更多</a></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+        <h2 class="text-center">品茶三步走</h2>
+        <div class="text-center" style="margin-top: 20px;">
+            <video src="/assets/video/品茶三步.mp4" controls="controls" width="70%"></video>
+        </div>
+    </div>
+    <!-- <hr style="margin: 40px 0px;color: #666"/> -->
+    <h2 class="text-center">主流茶叶</h2>
+    <div *ngFor="let wellKnownTea of wellknownTeaList;let i = index">
+        <div class="row clearfix">
+            <div class="col-md-5" [class.col-md-push-7]="i%2 != 0">
+                <a class="cp" [routerLink]="['/home/well-known-tea', wellKnownTea.wellKnownTeaId]" class="thumbnail">
+                    <img src="{{wellKnownTea.teaImages[0].imageUrl}}" alt="loading">
+                </a>
+            </div>
+            <div class="col-md-7 paragraph" [class.col-md-pull-5]="i%2 != 0">
+                <h1>茶叶名称：{{wellKnownTea?.wellKnownTeaName}}</h1>
+                <h2>茶叶产地：{{wellKnownTea?.productionPlace}}</h2>
+                <p>{{wellKnownTea?.description}}</p>
+                <button class="btn btn-default text-center" [routerLink]="['/home/well-known-tea', wellKnownTea.wellKnownTeaId]">详情</button>
+            </div>
+        </div>
+        <hr style="margin: 40px 0px;"/>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

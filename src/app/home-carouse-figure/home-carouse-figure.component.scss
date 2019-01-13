@@ -1,0 +1,148 @@
+.content {
+    .head-title {
+        line-height: 34px;
+        font-size: 18px;
+        font-weight: bold;
+        color: #5bc0de;
+    }
+    .table>tbody>tr>td {
+        vertical-align: middle !important;
+    }
+    .home-carousel-figure-img {
+        width: 110px;
+        height: auto;
+    }
+    .add-module,.modify-module {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: 5000;
+        width: 30%;
+        transform: translate(-50%, -50%);
+        .panel-heading {
+            text-align: center;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .form-group {
+            .image-upload {
+                position: relative;
+                zoom: 1;
+                overflow: hidden; 
+                cursor: pointer;
+                background-color: #2399e5;
+                border-color: #2399e5;
+                span.upload-span {
+                    padding-left: 10px;
+                    font-weight: 550;
+                }
+            }
+            input.image-input {
+                position: absolute;
+                top: 0;
+                right: 0;
+                margin: 0;
+                opacity: 0;
+                min-height: 100%;
+                font-size: 100px;
+                text-align: right;
+                filter: alpha(opacity=0);
+                direction: ltr;
+                cursor: pointer;
+            }
+            textarea {
+                height: 80px;
+                resize: none;
+            }
+        }
+    }
+    .delete-module {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        z-index: 5000;
+        width: 25%;
+        transform: translate(-50%, -50%);
+        .panel-heading,.panel-body {
+            text-align: center;
+        }
+        .panel-heading {
+            font-weight: bold;
+        }
+    }
+    .home-carousel-figure-img {
+        border-radius: 5px;
+        cursor: pointer;
+        transition: 0.3s;
+        &:hover {
+            opacity: 0.7;
+        }
+    }
+    
+    /* The Modal (background) */
+    .modal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        padding-top: 60px;
+        left: 50%;
+        top: 50%;
+        width: 60%;
+        height: 80%;
+        transform: translate(-50%, -50%);
+        overflow: auto;
+        background-color: black;
+        background-color: rgba(0, 0, 0, 0.9);
+    }
+    
+    /* Modal Content (image) */
+    .modal-content {
+        margin: auto;
+        display: block;
+        width: 80%;
+        max-width: 700px;
+    }
+    
+    /* Add Animation */
+    .modal-content, #caption {    
+        -webkit-animation-name: zoom;
+        -webkit-animation-duration: 0.6s;
+        animation-name: zoom;
+        animation-duration: 0.6s;
+    }
+    
+    @-webkit-keyframes zoom {
+        from {-webkit-transform: scale(0)} 
+        to {-webkit-transform: scale(1)}
+    }
+    
+    @keyframes zoom {
+        from {transform: scale(0.1)} 
+        to {transform: scale(1)}
+    }
+    
+    /* The Close Button */
+    .close {
+        position: absolute;
+        top: 15px;
+        right: 35px;
+        color: #f1f1f1;
+        font-size: 40px;
+        font-weight: bold;
+        transition: 0.3s;
+    }
+    
+    .close:hover,
+    .close:focus {
+        color: #bbb;
+        text-decoration: none;
+        cursor: pointer;
+    }
+    
+    /* 100% Image Width on Smaller Screens */
+    @media only screen and (max-width: 700px){
+        .modal-content {
+            width: 100%;
+        }
+    }
+}

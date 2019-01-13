@@ -1,0 +1,63 @@
+<div class="content" style="background:#dceffe">
+  <!-- 错误信息提示框 -->
+  <div class="tip-postion" *ngIf="isShowErrorTip">
+      <div class="alert alert-danger">
+        <span class="glyphicon glyphicon-info-sign"></span>
+        <div class="w10"></div>{{errorMessage}}
+      </div>
+  </div>
+  <!-- 成功信息提示框 -->
+  <div class="tip-postion" *ngIf="isShowSuccessTip">
+      <div class="alert alert-success">
+        <span class="glyphicon glyphicon-ok"></span>
+        <div class="w10"></div>{{successMessage}}
+    </div>
+  </div>
+  <div class="container clearfix">
+    <div class="col-md-10 col-md-offset-1">
+      <div style="height: 20px;"></div>
+      <div *ngFor="let post of postList" class="post-div clearfix">
+        <div class="col-md-3 text-center">
+          <div style="display:inline-block">
+            <a class="thumbnail cp" style="margin-bottom: 5px;">
+              <div class="head" [style.background-image]="'url(' + post?.user.headSculptureUrl + ')'"></div>
+            </a>
+            <p>{{post?.user.userName}}</p>
+          </div>
+        </div>
+        <div class="col-md-9">
+          <p><a [routerLink]="['/home-admin/post-detail', post.postId]">{{post?.title}}</a></p>
+          <div [innerHtml]="post?.content" class="post-list"></div>
+        </div>
+      </div>
+      <nav aria-label="Page navigation" class="clearfix" style="padding-right:30px;margin-top:20px">
+        <p-button class="pull-right" (onClick)="goPage()" label="GO" style="margin: 5px;"></p-button>
+        <input type="text" class="form-control pull-right pagination-input" name="pageForSkip" [(ngModel)]="pageForSkip" (keypress)="removeChar($event)"/>
+        <span class="pull-right pagination-span">共{{total}}条/共{{pages}}页</span>
+        <ul class="pagination pull-right">
+          <li [class.disabled]="pageNum === 1">
+            <a (click)="prePage()" aria-label="Previous" class="cp">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+          <li>
+            <a (click)="skipPage(1)" aria-label="firstPage" class="cp">首页</a>
+          </li>
+          <li *ngIf="pageNum - 2 > 0"><a (click)="skipPage(pageNum - 2)" class="cp">{{pageNum - 2}}</a></li>
+          <li *ngIf="pageNum - 1 > 0"><a (click)="skipPage(pageNum - 1)" class="cp">{{pageNum - 1}}</a></li>
+          <li class="active"><a (click)="skipPage(pageNum)" class="cp">{{pageNum}}</a></li>
+          <li *ngIf="pageNum + 1 <= pages"><a (click)="skipPage(pageNum + 1)" class="cp">{{pageNum + 1}}</a></li>
+          <li *ngIf="pageNum + 2 <= pages"><a (click)="skipPage(pageNum + 2)" class="cp">{{pageNum + 2}}</a></li>
+          <li>
+            <a (click)="skipPage(pages)" aria-label="lastPage" class="cp">末页</a>
+          </li>
+          <li [class.disabled]="pageNum === pages">
+            <a (click)="nextPage()" aria-label="Next" class="cp">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
