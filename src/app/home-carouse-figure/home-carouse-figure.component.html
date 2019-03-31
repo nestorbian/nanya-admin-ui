@@ -25,30 +25,34 @@
   <!-- 遮罩层 -->
   <p-blockUI [blocked]="isShowBlock"></p-blockUI>
 
-  <!-- 添加轮播图 -->
+  <!-- 添加分类 -->
   <div class="panel panel-default add-module" *ngIf="isShowAddModule">
     <div class="panel-heading">
-      <span>添加轮播图模块</span>
+      <span>添加分类模块</span>
     </div>
-    <form (ngSubmit)="addCarouse()" #carouseForm="ngForm">
+    <form (ngSubmit)="addCategory()" #carouseForm="ngForm">
       <div class="panel-body">
         <div class="form-group">
-          <label>轮播图片:</label><br/>
+          <label>分类标题:</label>
+          <input type="text" class="form-control" name="categoryName" maxlength="20" [(ngModel)]="categoryName" 
+          #localCategoryName="ngModel" required placeholder="限20个字" [class.red-border]="localCategoryName.touched && localCategoryName.invalid"/>
+        </div>
+        <div class="form-group">
+          <label>分类图片:</label><br/>
           <a class="btn btn-primary image-upload">
             <span [class]="uploadFont"></span><span class="upload-span">{{imageFileName}}</span>
             <input type="file" accept="image/*" class="image-input" (change)="onImageUpload($event)" name="imageFile"/>
           </a>
         </div>
         <div class="form-group">
-          <label>轮播标题:</label>
-          <input type="text" class="form-control" name="carouselFigureTitle" maxlength="20" [(ngModel)]="carouselFigureTitle" 
-          #localCarouselFigureTitle="ngModel" required placeholder="限20个字" [class.red-border]="localCarouselFigureTitle.touched && localCarouselFigureTitle.invalid"/>
+          <label>分类描述:</label>
+          <textarea class="form-control" name="categoryDescription" maxlength="50" [(ngModel)]="categoryDescription"
+          #localCategoryDescription="ngModel" placeholder="限50个字" [class.red-border]="localCategoryDescription.touched && localCategoryDescription.invalid">
+          </textarea>
         </div>
         <div class="form-group">
-          <label>轮播内容:</label>
-          <textarea class="form-control" name="carouselFigureContent" maxlength="100" [(ngModel)]="carouselFigureContent"
-          #localCarouselFigureContent="ngModel" required placeholder="限100个字" [class.red-border]="localCarouselFigureContent.touched && localCarouselFigureContent.invalid">
-          </textarea>
+            <p-checkbox [(ngModel)]="needShowInHome" binary="true" name="needShowInHome" id="needShowInHome"></p-checkbox>
+            <label for="needShowInHome" (click)="needShowInHome=!needShowInHome">是否展示在主页</label>
         </div>
       </div>
       <div class="panel-footer clearfix">
@@ -61,27 +65,31 @@
   <!-- 修改轮播图 -->
   <div class="panel panel-default modify-module" *ngIf="isShowModifyModule">
     <div class="panel-heading">
-      <span>修改轮播图模块</span>
+      <span>修改分类模块</span>
     </div>
-    <form (ngSubmit)="modifyCarouse()" #modifyCarouseForm="ngForm">
+    <form (ngSubmit)="modifyCategory()" #modifyCarouseForm="ngForm">
       <div class="panel-body">
         <div class="form-group">
-          <label>轮播图片:</label><br/>
+          <label>分类标题:</label>
+          <input type="text" class="form-control" name="categoryName" maxlength="20" [(ngModel)]="categoryName" 
+          #localCategoryName="ngModel" required placeholder="限20个字" [class.red-border]="localCategoryName.touched && localCategoryName.invalid"/>
+        </div>
+        <div class="form-group">
+          <label>分类图片:</label><br/>
           <a class="btn btn-primary image-upload">
             <span [class]="uploadFont"></span><span class="upload-span">{{imageFileName}}</span>
             <input type="file" accept="image/*" class="image-input" (change)="onImageUpload($event)" name="imageFile"/>
           </a>
         </div>
         <div class="form-group">
-          <label>轮播标题:</label>
-          <input type="text" class="form-control" name="carouselFigureTitle" maxlength="20" [(ngModel)]="carouselFigureTitle" 
-          #localCarouselFigureTitle="ngModel" required placeholder="限20个字" [class.red-border]="localCarouselFigureTitle.touched && localCarouselFigureTitle.invalid"/>
+          <label>分类描述:</label>
+          <textarea class="form-control" name="categoryDescription" maxlength="50" [(ngModel)]="categoryDescription"
+          #localCategoryDescription="ngModel" placeholder="限50个字" [class.red-border]="localCategoryDescription.touched && localCategoryDescription.invalid">
+          </textarea>
         </div>
         <div class="form-group">
-          <label>轮播内容:</label>
-          <textarea class="form-control" name="carouselFigureContent" maxlength="100" [(ngModel)]="carouselFigureContent"
-          #localCarouselFigureContent="ngModel" required placeholder="限100个字" [class.red-border]="localCarouselFigureContent.touched && localCarouselFigureContent.invalid">
-          </textarea>
+          <p-checkbox [(ngModel)]="needShowInHome" binary="true" name="needShowInHome" id="needShowInHome"></p-checkbox>
+          <label for="needShowInHome" (click)="needShowInHome=!needShowInHome">是否展示在主页</label>
         </div>
       </div>
       <div class="panel-footer clearfix">
@@ -93,9 +101,9 @@
 
   <!-- 删除模块 -->
   <div class="panel panel-danger delete-module" *ngIf="isShowDeleteModule">
-    <div class="panel-heading">确定要删除该轮播信息吗？</div>
+    <div class="panel-heading">确定要删除该分类信息吗？</div>
     <div class="panel-body">
-      <button class="btn btn-info" (click)="confirmDeleteHomeCarouselFigure()">确定</button>
+      <button class="btn btn-info" (click)="confirmDeleteCategory()">确定</button>
       <div class="w10"></div>
       <button class="btn btn-default" (click)="cancelDeleteModule()">取消</button>
     </div>
@@ -103,7 +111,7 @@
 
   <!-- 轮播图管理标题 -->
   <div class="head">
-    <span class="head-title">轮播图管理</span>
+    <span class="head-title">分类管理</span>
     <button class="btn btn-info fr" (click)="isShowAddModule=true;isShowBlock=true"><span class="fa fa-plus"></span>&nbsp;添加</button>
   </div>
   <hr />
@@ -112,27 +120,29 @@
     <thead>
       <tr>
         <th width="5%">序号</th>
-        <th width="15%">轮播图片</th>
-        <th width="10%">轮播标题</th>
-        <th width="35%">轮播内容</th>
+        <th width="15%">分类名称</th>
+        <th width="25%">分类描述</th>
+        <th width="10%">分类图片</th>
+        <th width="10%">是否展示在主页</th>
         <th width="12%">创建时间</th>
         <th width="13%">更新时间</th>
         <th width="10%">操作</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let homeCarouselFigure of homeCarouselFigureList;let i = index">
+      <tr *ngFor="let item of categoryList;let i = index">
         <td>{{i + 1}}</td>
-        <td><img (click)="previewImage(homeCarouselFigure.carouselFigureImageUrl)" class="home-carousel-figure-img" [src]="sanitizer.bypassSecurityTrustUrl(homeCarouselFigure.carouselFigureImageUrl)" alt="loading"/></td>
-        <td>{{homeCarouselFigure.carouselFigureTitle}}</td>
-        <td>{{homeCarouselFigure.carouselFigureContent}}</td>
-        <td>{{homeCarouselFigure.createTime}}</td>
-        <td>{{homeCarouselFigure.updateTime}}</td>
+        <td>{{item?.categoryName}}</td>
+        <td>{{item?.categoryDescription}}</td>
+        <td><img *ngIf="item?.imageUrl !== null" (click)="previewImage(item?.imageUrl)" class="home-carousel-figure-img" [src]="sanitizer.bypassSecurityTrustUrl(item?.imageUrl)" alt="loading"/></td>
+        <td>{{item?.needShowInHome ? '是' : '否'}}</td>
+        <td>{{item?.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+        <td>{{item?.updateTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
         <td>
-          <button class="btn btn-warning" (click)="showModifyModule(homeCarouselFigure)">
+          <button class="btn btn-warning" (click)="showModifyModule(item)">
             <span class="glyphicon glyphicon-edit"></span>
           </button>
-          <button class="btn btn-danger" (click)="deleteHomeCarouselFigure(homeCarouselFigure.carouselFigureId, homeCarouselFigure.carouselFigureImagePath)">
+          <button class="btn btn-danger" (click)="deleteCategory(item.categoryId)">
             <span class="glyphicon glyphicon-trash"></span>
           </button>
         </td>

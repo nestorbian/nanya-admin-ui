@@ -34,11 +34,11 @@
   <!-- 菜单栏 -->
     <div class="layout-menu-wrapper" [style.background-image]="'url(' + menuSkin + ')'">
       <div class="sidebar-logo" [style.background-color]="titleSkin">
-        <div class="brand"><span class="fa fa-envira fa-3x"></span>茶道管理平台</div>
+        <div class="brand"><span class="fa fa-envira fa-3x"></span>南雅花艺管理平台</div>
       </div>
         <p-scrollPanel [style]="{width: 'calc(100% + 2px)',border: 'none', height: 'calc(100% + 18px)', overflow: 'scrollbars-none', background: 'transparent'}" styleClass="custom">
         <ul class="menu-ul">
-          <li>
+          <!-- <li>
             <a (click)="showChildMenu()" [ngClass]="{'active-a': isShowChildMenu, 'inactive-a': !isShowChildMenu}">主页管理
               <span class="glyphicon glyphicon-home"></span><span class="glyphicon glyphicon-menu-down menu-down"></span>
             </a>
@@ -53,12 +53,19 @@
                   主流茶<span class="fa fa-leaf"></span>
                 </a>
               </li>
-              <!-- <li>
-                <a (click)="clearActive();tenFamousTeaActive=true;" [class.item-active]="tenFamousTeaActive">十大名茶
-                  <span class="fa fa-tree"></span>
-                </a>
-              </li> -->
             </ul>
+          </li> -->
+          <li>
+            <a (click)="clearActive();categoryActive=true;" [ngClass]="{'active-a': categoryActive, 'inactive-a': !categoryActive}"
+            [routerLink]="['/home-admin/category']">
+            分类管理<span class="glyphicon glyphicon-th-large"></span>
+            </a>
+          </li>
+          <li>
+            <a (click)="clearActive();wellKnownTeaActive=true;" [ngClass]="{'active-a': wellKnownTeaActive, 'inactive-a': !wellKnownTeaActive}"
+             [routerLink]="['/home-admin/well-known-tea']">
+              主流茶<span class="fa fa-leaf"></span>
+            </a>
           </li>
           <li>
             <a (click)="clearActive();teaSetNewsActive=true;" [ngClass]="{'active-a': teaSetNewsActive, 'inactive-a': !teaSetNewsActive}"

@@ -14,7 +14,7 @@ export class TeaAdminComponent implements OnInit {
   isShowChildSettingMenu = false;
   ChildSettingMenuStyle = '';
   // active control
-  carouselFigureActive = true;
+  categoryActive = true;
   wellKnownTeaActive = false;
   tenFamousTeaActive = false;
   teaSetNewsActive = false;
@@ -50,7 +50,7 @@ export class TeaAdminComponent implements OnInit {
   }
 
   showChildMenu(): void {
-    this.carouselFigureActive = false;
+    this.categoryActive = false;
     this.wellKnownTeaActive = false;
     this.tenFamousTeaActive = false;
     this.teaSetNewsActive = false;
@@ -67,7 +67,7 @@ export class TeaAdminComponent implements OnInit {
   }
 
   showChildSettingMenu(): void {
-    this.carouselFigureActive = false;
+    this.categoryActive = false;
     this.wellKnownTeaActive = false;
     this.tenFamousTeaActive = false;
     this.teaSetNewsActive = false;
@@ -84,7 +84,7 @@ export class TeaAdminComponent implements OnInit {
   }
 
   clearActive(): void {
-    this.carouselFigureActive = false;
+    this.categoryActive = false;
     this.wellKnownTeaActive = false;
     this.tenFamousTeaActive = false;
     this.teaSetNewsActive = false;
@@ -128,7 +128,12 @@ export class TeaAdminComponent implements OnInit {
   // 登出
   logout(): void {
     this.adminService.logout().subscribe((data) => {
-      this.router.navigate(['/login']);
+      if (data['status'] === 0) {
+        this.router.navigate(['/login']);
+      } else {
+        this.errorMessage = data['message'];
+        this.showErrorTip();
+      }
       // location.href = '/login';
     }, (err: HttpErrorResponse) => {
       this.handleError(err);

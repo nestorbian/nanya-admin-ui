@@ -17,40 +17,81 @@
 
   <!-- 主流茶add-->
   <div class="head clearfix">
-    <span class="head-title">添加主流茶模块</span>
+    <span class="head-title">添加商品模块</span>
     <button class="btn btn-info fr" [routerLink]="['/home-admin/well-known-tea']">返回</button>
   </div>
   <hr />
   <div class="row">
     <div class="col-md-8 col-sm-10 col-lg-8">
-      <form #teaForm="ngForm" (ngSubmit)="addTea()">
+      <form #teaForm="ngForm" (ngSubmit)="addProduct()">
         <div class="form-group">
-          <label for="wellKnownTeaName">茶名<span class="red">*</span>：</label>
-          <input class="form-control" type="text" [(ngModel)]="wellKnownTeaName" #localWellKnownTeaName="ngModel" id="wellKnownTeaName" 
-          name="wellKnownTeaName" maxlength="30" required [class.red-border]="localWellKnownTeaName.touched && localWellKnownTeaName.invalid"/>
+          <label for="productName">商品名称<span class="red">*</span>：</label>
+          <input class="form-control" type="text" [(ngModel)]="productName" #localProductName="ngModel" id="productName" 
+          name="productName" maxlength="30" required [class.red-border]="localProductName.touched && localProductName.invalid"/>
         </div>
         <div class="form-group">
-          <label for="productionPlace">产地<span class="red">*</span>：</label>
-          <input class="form-control" type="text" [(ngModel)]="productionPlace" #localProductionPlace="ngModel" id="productionPlace" 
-          name="productionPlace" maxlength="50" required [class.red-border]="localProductionPlace.touched && localProductionPlace.invalid"/>
-        </div>
-        <div class="form-group">
-          <label>茶图片<span class="red">*</span>：</label>
-          <p-fileUpload name="demo[]" (onSelect)="onUpload($event)" multiple="multiple" accept="image/*" maxFileSize="2000000" 
-          (onRemove)="removeImage($event)" (onClear)="clearImages()" [showUploadButton]="false" chooseLabel="选择" cancelLabel="清空">
-            <ng-template pTemplate="content">
-            </ng-template>        
-          </p-fileUpload>
-        </div>
-        <div class="form-group">
-          <label for="description">简单描述<span class="red">*</span>：</label>
-          <textarea class="form-control rs" type="text" [(ngModel)]="description" #localDescription="ngModel" id="description" rows="5"
-          name="description" maxlength="200" required [class.red-border]="localDescription.touched && localDescription.invalid">
+          <label for="productDescription">商品描述<span class="red">*</span>：</label>
+          <textarea class="form-control rs" type="text" [(ngModel)]="productDescription" #localProductDescription="ngModel" id="productDescription" rows="5"
+          name="productDescription" maxlength="200" required [class.red-border]="localProductDescription.touched && localProductDescription.invalid">
           </textarea>
         </div>
         <div class="form-group">
-          <label>详细描述<span class="red">*</span>：</label><small class="text-success">注：用于网页显示</small>
-          <p-editor [(ngModel)]="detailPart" [style]="{'height':'300px'}" required #localDetailPart="ngModel" name="detailPart"></p-editor>
+          <label for="productOriginalPrice">原价<span class="red">*</span>：</label>
+          <input type="number" class="form-control" name="productOriginalPrice" [(ngModel)]="productOriginalPrice" #localProductOriginalPrice="ngModel" 
+          id="productOriginalPrice" placeholder="限两位小数" required [class.red-border]="localProductOriginalPrice.touched && localProductOriginalPrice.invalid" 
+          (keypress)="removeChar($event)" (input)="removeInvalid($event)"/>
+        </div>
+        <div class="form-group">
+          <label for="productDiscountPrice">折扣价：</label><small class="text-success">注：UI上优先显示折扣价，折扣价不填默认显示原价</small>
+          <input type="number" class="form-control" name="productDiscountPrice" [(ngModel)]="productDiscountPrice" #localProductDiscountPrice="ngModel" 
+          id="productDiscountPrice" placeholder="限两位小数" [class.red-border]="localProductDiscountPrice.touched && localProductDiscountPrice.invalid" 
+          (keypress)="removeChar($event)" (input)="removeInvalid($event)"/>
+        </div>
+        <div class="form-group">
+          <label for="productStock">库存<span class="red">*</span>：</label>
+          <input type="number" class="form-control" name="productStock" [(ngModel)]="productStock" #localProductStock="ngModel" 
+          id="productStock" placeholder="限整数" required [class.red-border]="localProductStock.touched && localProductStock.invalid" 
+          (keypress)="removeChar($event)" (input)="removeInvalid($event)"/>
+        </div>
+        <div class="form-group">
+          <label for="flowerMaterial">花材<span class="red">*</span>：</label>
+          <textarea class="form-control rs" type="text" [(ngModel)]="flowerMaterial" #localFlowerMaterial="ngModel" id="flowerMaterial" rows="3"
+          name="flowerMaterial" maxlength="100" required [class.red-border]="localFlowerMaterial.touched && localFlowerMaterial.invalid">
+          </textarea>
+        </div>
+        <div class="form-group">
+          <label for="productPackage">包装<span class="red">*</span>：</label>
+          <textarea class="form-control rs" type="text" [(ngModel)]="productPackage" #localProductPackage="ngModel" id="productPackage" rows="3"
+          name="productPackage" maxlength="100" required [class.red-border]="localProductPackage.touched && localProductPackage.invalid">
+          </textarea>
+        </div>
+        <div class="form-group">
+          <label for="productScene">场景<span class="red">*</span>：</label>
+          <textarea class="form-control rs" type="text" [(ngModel)]="productScene" #localProductScene="ngModel" id="productScene" rows="3"
+          name="productScene" maxlength="100" required [class.red-border]="localProductScene.touched && localProductScene.invalid">
+          </textarea>
+        </div>
+        <div class="form-group">
+          <label for="distribution">配送<span class="red">*</span>：</label>
+          <textarea class="form-control rs" type="text" [(ngModel)]="distribution" #localDistribution="ngModel" id="distribution" rows="3"
+          name="distribution" maxlength="100" required [class.red-border]="localDistribution.touched && localDistribution.invalid">
+          </textarea>
+        </div>
+        <div class="form-group" style="display: flex;align-items: center;">
+          <label>所属分类<span class="red">*</span>：</label>
+          <p-multiSelect [options]="categories" name="categories" [(ngModel)]="selectedCategories" [filter]="true" optionLabel="categoryName" [panelStyle]="{minWidth:'12em'}">
+          </p-multiSelect>
+        </div>
+        <div class="form-group">
+          <label>商品图片<span class="red">*</span>：</label>
+          <div class="well clearfix" >
+            <div *ngFor="let item of productImages"  class="fl image-div" [style.background-image]="'url(' + item?.imageUrl + ')'">
+              <button type="button" class="close" (click)="deleteImage(index)">&times;</button>
+            </div>
+            <div class="add-div fl">
+              <input type="file" accept="image/*" name="productImage" multiple class="uplaod-image" (change)="uploadImages($event)"/>
+            </div>
+          </div>
         </div>
         <div class="form-group">
           <p-button type="submit" icon="fa fa-fw fa-check" label="提交" [disabled]="!teaForm.form.valid"></p-button>

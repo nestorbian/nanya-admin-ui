@@ -7,6 +7,12 @@
       </div>
     </div>
   
+  <!-- 图片预览 -->
+  <div id="myModal" class="modal">
+    <span class="close" (click)="closePreview()">×</span>
+    <img class="modal-content" [src]="previewUrl" alt="loading">
+  </div>
+
     <!-- 成功信息提示框 -->
     <div class="tip-postion" *ngIf="isShowSuccessTip">
         <div class="alert alert-success">
@@ -20,44 +26,76 @@
 
       <!-- 删除模块 -->
     <div class="panel panel-danger delete-module" *ngIf="isShowDeleteModule">
-        <div class="panel-heading">确定要删除该主流茶信息吗？</div>
+        <div class="panel-heading">确定要删除该商品信息吗？</div>
         <div class="panel-body">
-          <button class="btn btn-info" (click)="confirmDeleteWellKnownTea()">确定</button>
+          <button class="btn btn-info" (click)="confirmDeleteProduct()">确定</button>
           <div class="w10"></div>
           <button class="btn btn-default" (click)="cancelDeleteModule()">取消</button>
         </div>
     </div>
 
   <!-- 主流茶card -->
-    <div class="head clearfix">
-        <span class="head-title">主流茶管理</span>
-        <button class="btn btn-info fr" [routerLink]="['/home-admin/add-well-known-tea']"><span class="fa fa-plus"></span>&nbsp;添加</button>
-    </div>
-    <hr />
-    <div class="row">
-        <div class="col-md-4 col-sm-6 col-lg-3" *ngFor="let wellKnownTea of wellknownTeaList">
-            <p-card title="{{wellKnownTea.wellKnownTeaName}}" subtitle="{{wellKnownTea.productionPlace}}" [style]="{width: '100%'}" styleClass="ui-card-shadow">
-                <p-header>
-                    <div class="img-div" [style.background-image]="'url(' + wellKnownTea.teaImages[0].imageUrl + ')'"></div>
-                    <!-- <img src="Card" src="{{wellKnownTea.teaImages[0].imageUrl}}"> -->
-                </p-header>
-                <div>
-                    {{wellKnownTea.description}}
-                </div>
-                <p-footer>
-                    <button pButton type="button" label="编辑" icon="fa-edit" (click)="editWellKnownTea(wellKnownTea.wellKnownTeaId)"></button>
-                    <button pButton type="button" label="删除" icon="fa-close" class="ui-button-secondary" (click)="deleteWellKnownTea(wellKnownTea.wellKnownTeaId)"></button>
-                </p-footer>
-            </p-card>
-        </div>
-    </div>
-    <div>
-        <nav aria-label="Page navigation">
-            <ul class="pager">
-                <li class="previous cp" [class.disabled]="pageNum === 1"><a (click)="prePage()"><span aria-hidden="true">&larr;</span>上一页 </a></li>
-                <li><span>当前第{{pageNum}}页&nbsp;共{{pages}}页</span></li>
-                <li class="next cp" [class.disabled]="pageNum === pages"><a (click)="nextPage()">下一页 <span aria-hidden="true">&rarr;</span></a></li>
-            </ul>
-        </nav>
-    </div>
+  <div class="head clearfix">
+      <span class="head-title">商品管理</span>
+      <button class="btn btn-info fr" [routerLink]="['/home-admin/add-well-known-tea']"><span class="fa fa-plus"></span>&nbsp;添加</button>
+  </div>
+  <hr />
+  <div class="crollDiv">
+    <table class="table table-bordered table-hover table-striped">
+      <thead>
+        <tr>
+          <th width="50px">序号</th>
+          <th width="120px">商品名称</th>
+          <th width="250px">商品描述</th>
+          <th width="100px">原价</th>
+          <th width="100px">折扣价</th>
+          <th width="100px">库存</th>
+          <th width="200px">花材</th>
+          <th width="200px">包装</th>
+          <th width="200px">场景</th>
+          <th width="200px">配送</th>
+          <th width="100px">销量</th>
+          <th width="150px">所属分类</th>
+          <th width="200px">商品图片</th>
+          <th width="180px">创建时间</th>
+          <th width="180px">更新时间</th>
+          <th width="150px">操作</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of productList;let i = index">
+          <td>{{i + 1}}</td>
+          <td>{{item?.productName}}</td>
+          <td>{{item?.productDescription}}</td>
+          <td>￥{{item?.productOriginalPrice | number:"0.2"}}</td>
+          <td *ngIf="item?.productDiscountPrice != null">￥{{item?.productDiscountPrice| number:"0.2"}}</td><td *ngIf="item?.productDiscountPrice == null">无折扣</td>
+          <td>{{item?.productStock}}</td>
+          <td>{{item?.flowerMaterial}}</td>
+          <td>{{item?.productPackage}}</td>
+          <td>{{item?.productScene}}</td>
+          <td>{{item?.distribution}}</td>
+          <td>{{item?.saleVolume}}</td>
+          <td><span *ngFor="let c of item?.categories; let i = index"  class="label label-info" [ngStyle]="{'margin-right': i + 1 == item?.categories.length ? '0px' : '5px'}">{{c.categoryName}}</span></td>
+          <td><img (click)="previewImage(item?.productImages[0].imageUrl)" class="home-carousel-figure-img" [src]="sanitizer.bypassSecurityTrustUrl(item?.productImages[0].imageUrl)" alt="loading"/></td>
+          <td>{{item?.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+          <td>{{item?.updateTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+          <td style="white-space: normal !important">
+            <button class="btn btn-warning" (click)="editWellKnownTea(item?.productId)">
+              <span class="glyphicon glyphicon-edit"></span>
+            </button>
+            <button class="btn btn-danger" (click)="deleteProduct(item?.productId)">
+              <span class="glyphicon glyphicon-trash"></span>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <nav aria-label="Page navigation">
+    <ul class="pager">
+      <li class="previous cp" [class.disabled]="pageNum === 1"><a (click)="prePage()"><span aria-hidden="true">&larr;</span>上一页 </a></li>
+      <li><span>当前第{{pageNum}}页&nbsp;共{{pages}}页</span></li>
+      <li class="next cp" [class.disabled]="pageNum === pages"><a (click)="nextPage()">下一页 <span aria-hidden="true">&rarr;</span></a></li>
+    </ul>
+  </nav>
 </div>

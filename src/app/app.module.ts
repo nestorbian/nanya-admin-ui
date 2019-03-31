@@ -57,6 +57,7 @@ import { PostDetailAdminComponent } from './post-detail-admin/post-detail-admin.
 import {GrowlModule} from 'primeng/growl';
 import { LoginGuard } from './guard/LoginGuard';
 import { Code404Component } from './code404/code404.component';
+import {MultiSelectModule} from 'primeng/multiselect';
 
 @NgModule({
   declarations: [
@@ -121,7 +122,8 @@ import { Code404Component } from './code404/code404.component';
   ChartModule,
   CalendarModule,
   CarouselModule,
-  GrowlModule
+  GrowlModule,
+  MultiSelectModule
   ],
   providers: [IpService, UserService, AdminService, WellKnownTeaResolve, IndexUserGuard, LoginGuard],
   bootstrap: [AppComponent]

@@ -3,6 +3,7 @@ import { LifecycleHook } from '@angular/core/src/render3';
 import { AdminService } from '../service/admin.service';
 import { HttpErrorResponse } from '@angular/common/http/src/response';
 import { Router } from '@angular/router';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-well-known-tea',
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
 export class WellKnownTeaComponent implements OnInit {
   // 分页
   pageNum = 1;
-  pageSize = 4;
+  pageSize = 5;
   pages: number;
   // 错误提示弹窗
   isShowErrorTip = false;
@@ -21,40 +22,28 @@ export class WellKnownTeaComponent implements OnInit {
   successMessage: string;
   isShowSuccessTip = false;
   // 显示list
-  wellknownTeaList: any[] = null;
+  productList: any[] = null;
   // 删除
-  wellKnownTeaIdForDelete: string;
+  productIdForDelete: string;
   isShowDeleteModule = false;
   // 遮罩层
   isShowBlock = false;
+  // 预览图片
+  previewUrl: string;
 
-  constructor(private adminService: AdminService, private router: Router) { }
+  constructor(private adminService: AdminService, private router: Router, private sanitizer: DomSanitizer) { }
 
   ngOnInit() {
-    const screenWidth = window.document.body.clientWidth;
-    if (screenWidth >= 1200) {
-      this.pageSize = 4;
-    } else if (screenWidth >= 992 && screenWidth < 1200) {
-      this.pageSize = 3;
-    } else if (screenWidth >= 768 && screenWidth < 992) {
-      this.pageSize = 2;
-    } else {
-      this.pageSize = 1;
-    }
     this.onLoadData(1, this.pageSize);
   }
 
   onLoadData(pageNum: number, pageSize: number): void {
-    this.adminService.findAllWellKnownTea(pageNum, pageSize).subscribe((data) => {
-      if (data['status']) {
-        const pageInfo = data['data'];
-        this.wellknownTeaList = pageInfo['list'];
-        this.pages = pageInfo['pages'];
-        this.pageNum = pageInfo['pageNum'];
-      } else {
-        this.errorMessage = data['message'];
-        this.showErrorTip();
-      }
+    this.adminService.findProducts(pageNum, pageSize).subscribe((data) => {
+      const pageInfo = data['data'];
+      this.productList = pageInfo['content'];
+      this.pages = pageInfo['totalPages'];
+      this.pageNum = pageInfo['number'] + 1;
+      console.log(this.productList);
     }, (err: HttpErrorResponse) => {
       this.handleError(err);
     });
@@ -69,12 +58,13 @@ export class WellKnownTeaComponent implements OnInit {
     } else if (err.status === 404) {
       this.errorMessage = '请求资源未找到';
     } else if (err.status >= 500 && err.status < 600) {
-      this.errorMessage = '服务器内部错误';
+      this.errorMessage = err.error['status'] === 49 ? '服务器内部错误' : err.error['message'];
     } else {
       this.errorMessage = '请求超时';
     }
     this.showErrorTip();
   }
+
 
   // 弹出错误提示框
   showErrorTip(): void {
@@ -95,8 +85,8 @@ export class WellKnownTeaComponent implements OnInit {
   }
 
   // 弹出删除对话框
-  deleteWellKnownTea(wellKnownTeaId: string): void {
-    this.wellKnownTeaIdForDelete = wellKnownTeaId;
+  deleteProduct(productId: string): void {
+    this.productIdForDelete = productId;
     this.isShowBlock = true;
     this.isShowDeleteModule = true;
   }
@@ -105,41 +95,49 @@ export class WellKnownTeaComponent implements OnInit {
   cancelDeleteModule(): void {
     this.isShowBlock = false;
     this.isShowDeleteModule = false;
-    this.wellKnownTeaIdForDelete = '';
+    this.productIdForDelete = '';
   }
 
   // 确认删除
-  confirmDeleteWellKnownTea(): void {
-    this.adminService.deleteWellKnownTeaById(this.wellKnownTeaIdForDelete).subscribe((data) => {
-      if (data['status']) {
-        this.cancelDeleteModule();
-        this.successMessage = '删除成功';
-        this.showSuccessTip();
-        this.onLoadData(this.pageNum, this.pageSize);
-      } else {
-        this.errorMessage = data['message'];
-        this.showErrorTip();
-      }
+  confirmDeleteProduct(): void {
+    this.adminService.deleteProductById(this.productIdForDelete).subscribe((data) => {
+      this.cancelDeleteModule();
+      this.successMessage = '删除成功';
+      this.showSuccessTip();
+      this.onLoadData(this.pageNum, this.pageSize);
     }, (err: HttpErrorResponse) => {
       this.handleError(err);
     });
   }
 
-    // 上一页
-    prePage(): void {
-      if (this.pageNum > 1) {
-        this.onLoadData(this.pageNum - 1, this.pageSize);
-      }
+  // 上一页
+  prePage(): void {
+    if (this.pageNum > 1) {
+      this.onLoadData(this.pageNum - 1, this.pageSize);
     }
+  }
 
-    // 下一页
-    nextPage(): void {
-      if (this.pageNum < this.pages) {
-        this.onLoadData(this.pageNum + 1, this.pageSize);
-      }
+  // 下一页
+  nextPage(): void {
+    if (this.pageNum < this.pages) {
+      this.onLoadData(this.pageNum + 1, this.pageSize);
     }
+  }
 
-    editWellKnownTea(wellKnownTeaId: string): void {
-      this.router.navigate(['/home-admin/edit-well-known-tea', wellKnownTeaId]);
-    }
+  editWellKnownTea(productId: string): void {
+    this.router.navigate(['/home-admin/edit-well-known-tea', productId]);
+  }
+
+  // 预览图片
+  previewImage(url: string): void {
+    this.previewUrl = url;
+    const modal = document.getElementById('myModal');
+    modal.style.display = 'flex';
+  }
+
+  // 关闭预览图片
+  closePreview(): void {
+    const modal = document.getElementById('myModal');
+    modal.style.display = 'none';
+  }
 }

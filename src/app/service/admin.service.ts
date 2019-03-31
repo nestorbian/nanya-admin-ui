@@ -3,12 +3,90 @@ import { HttpClient } from '@angular/common/http';
 import { IpService } from './ip.service';
 import { Observable } from 'rxjs/Observable';
 import { forEach } from '@angular/router/src/utils/collection';
+import { httpFactory } from '@angular/http/src/http_module';
 
 
 @Injectable()
 export class AdminService {
 
   constructor(private http: HttpClient, private ipService: IpService) { }
+
+  // naya
+  saveManyImage(imageFiles: File[], type: string): Observable<any> {
+    const formData = new FormData();
+    for (let i = 0; i < imageFiles.length; i ++) {
+      formData.append('images', imageFiles[i]);
+    }
+    formData.append('type', type);
+    return this.http.post('/nanyahuayi/admin/images/many', formData);
+  }
+
+  saveOneImage(imageFile: File, type: string): Observable<any> {
+    const formData = new FormData();
+    formData.append('image', imageFile);
+    formData.append('type', type);
+    return this.http.post('/nanyahuayi/admin/images/one', formData);
+  }
+
+  // 登出
+  logout(): Observable<any> {
+    return this.http.get('/nanyahuayi/admins/logout');
+  }
+
+  // 根据session获取管理员信息
+  getUserFromSession(): Observable<any> {
+    return this.http.get('/nanyahuayi/admins/session');
+  }
+
+  addCategory(categoryName: string, categoryDescription: string, needShowInHome: boolean, imagePath: string, imageUrl: string)
+  : Observable<any> {
+    const body = {categoryName: categoryName, categoryDescription: categoryDescription, needShowInHome: needShowInHome,
+      imagePath: imagePath, imageUrl: imageUrl};
+    return this.http.post('/nanyahuayi/admin/categories', body);
+  }
+
+  getAllCategories(pageNum: number, pageSize: number): Observable<any> {
+    return this.http.get(`/nanyahuayi/admin/categories/${pageNum}/${pageSize}`);
+  }
+
+  modifyCategory(categoryName: string, categoryDescription: string, needShowInHome: boolean, imagePath: string, imageUrl: string,
+  categoryId: string, createTime: Date): Observable<any> {
+    const body = {categoryId: categoryId, categoryName: categoryName, categoryDescription: categoryDescription,
+      needShowInHome: needShowInHome, imagePath: imagePath, imageUrl: imageUrl, createTime: createTime};
+    return this.http.put('/nanyahuayi/admin/categories', body);
+  }
+
+  deleteCategory(categoryId: string): Observable<any> {
+    return this.http.delete(`/nanyahuayi/admin/categories?id=${categoryId}`);
+  }
+
+  findCategoryItems(): Observable<any> {
+    return this.http.get('/nanyahuayi/admin/categories');
+  }
+
+  addProduct(product: any): Observable<any> {
+    return this.http.post('/nanyahuayi/admin/products', product);
+  }
+
+  findProducts(pageNum: number, pageSize: number): Observable<any> {
+    return this.http.get(`/nanyahuayi/admin/products/${pageNum}/${pageSize}`);
+  }
+
+  deleteProductById(productId: string): Observable<any> {
+    return this.http.delete(`/nanyahuayi/admin/products?id=${productId}`);
+  }
+
+  findProductById(id: string): Observable<any> {
+    return this.http.get(`/nanyahuayi/admin/products?id=${id}`);
+  }
+
+  modifyProduct(product: any): Observable<any> {
+    return this.http.put('/nanyahuayi/admin/products', product);
+  }
+
+  /**
+   * *****************************************************************
+   */
 
   // 轮播图管理
   saveHomeCarouselFigure(imageFile: File, carouselFigureTitle: string, carouselFigureContent: string): Observable<any> {
@@ -42,16 +120,6 @@ export class AdminService {
     formData.append('adminName', adminName);
     formData.append('password', password);
     return this.http.post(`/nanyahuayi/admins/login`, formData);
-  }
-
-  // 根据session获取管理员信息
-  getUserFromSession(): Observable<any> {
-    return this.http.get('/nanyahuayi/admins/session');
-  }
-
-  // 登出
-  logout(): Observable<any> {
-    return this.http.get('/tea/admins/logout');
   }
 
   // 主流茶管理

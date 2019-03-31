@@ -10,11 +10,16 @@ import { Router } from '@angular/router';
 })
 export class WellKnownTeaAddComponent implements OnInit {
   // 表单
-  uploadedFiles: File[] = [];
-  detailPart: string;
-  wellKnownTeaName: string;
-  description: string;
-  productionPlace: string;
+  productName: string;
+  productDescription: string;
+  productImages: Array<any> = [];
+  productOriginalPrice: number;
+  productDiscountPrice: number;
+  productStock: number;
+  flowerMaterial: string;
+  productPackage: string;
+  productScene: string;
+  distribution: string;
   // 错误提示弹窗
   isShowErrorTip = false;
   errorMessage: string;
@@ -22,28 +27,43 @@ export class WellKnownTeaAddComponent implements OnInit {
   successMessage: string;
   isShowSuccessTip = false;
 
-  constructor(private adminService: AdminService, private router: Router) { }
+  categories: any[];
+  selectedCategories: any[] = [];
+
+  constructor(private adminService: AdminService, private router: Router) {
+  }
 
   ngOnInit() {
     window.scrollTo(0, 0);
+
+    this.adminService.findCategoryItems().subscribe((data) => {
+      this.categories = data['data'];
+    }, (err: HttpErrorResponse) => {
+      this.handleError(err);
+    });
   }
 
-  // 上传图片
-  onUpload(event) {
-    for (const file of event.files) {
-        this.uploadedFiles.push(file);
+  // 只能输入数字
+  removeChar(event: any): boolean {
+    const code = event.keyCode;
+    if (code >= 48 && code <= 57 || code === 46) {
+      return true;
+    } else {
+      return false;
     }
   }
 
-  // 清除单个图片
-  removeImage(event: any): void {
-    this.uploadedFiles.splice(this.uploadedFiles.indexOf(event.file), 1);
-    console.log(this.uploadedFiles);
-  }
-
-  // 清空图片
-  clearImages(): void {
-    this.uploadedFiles = [];
+  removeInvalid(event: any): void {
+    // 先把非数字的都替换掉，除了数字和.
+    event.target.value = event.target.value.replace(/[^\d.]/g, '');
+    // 必须保证第一个为数字而不是.
+    event.target.value = event.target.value.replace(/^\./g, '');
+    // 保证只有出现一个.而没有多个.
+    event.target.value = event.target.value.replace(/\.{2,}/g, '.');
+    // 保证.只出现一次，而不能出现两次以上
+    event.target.value = event.target.value.replace('.', '$#$').replace(/\./g, '').replace('$#$', '.');
+    // 保证.只后面只能出现两位有效数字
+    event.target.value = event.target.value.replace(/([0-9]+\.[0-9]{2})[0-9]*/, '$1');
   }
 
   // 错误处理
@@ -81,25 +101,48 @@ export class WellKnownTeaAddComponent implements OnInit {
     }, 1000);
   }
 
-  // 添加主流茶
-  addTea(): void {
-    if (this.uploadedFiles.length > 0) {
-      this.adminService.addWellKnownTea(this.uploadedFiles, this.wellKnownTeaName, this.productionPlace, this.description, this.detailPart)
-      .subscribe((data) => {
-        if (data['status']) {
-          this.successMessage = '添加成功';
-          this.showSuccessTip();
-        } else {
-          this.errorMessage = data['message'];
-          this.showErrorTip();
-        }
-      }, (err: HttpErrorResponse) => {
-        this.handleError(err);
-      });
-    } else {
+  // 添加商品
+  addProduct(): void {
+    if (this.productImages.length <= 0) {
       this.errorMessage = '请添加图片';
       this.showErrorTip();
+      return;
     }
+
+    if (this.selectedCategories.length <= 0) {
+      this.errorMessage = '请选择所属分类';
+      this.showErrorTip();
+      return;
+    }
+
+    const product = {productName: this.productName, productDescription: this.productDescription,
+      productOriginalPrice: this.productOriginalPrice, productDiscountPrice: this.productDiscountPrice,
+      productStock: this.productStock, flowerMaterial: this.flowerMaterial, productPackage: this.productPackage,
+      productScene: this.productScene, distribution: this.distribution, productImages: this.productImages,
+      categories: this.selectedCategories};
+      console.log(product);
+    this.adminService.addProduct(product).subscribe((data) => {
+      this.successMessage = '添加成功';
+      this.showSuccessTip();
+    }, (err: HttpErrorResponse) => {
+      this.handleError(err);
+    });
   }
 
+  // 删除图片
+  deleteImage(index: number): void {
+      this.productImages.splice(index, 1);
+  }
+
+  // 上传图片
+  uploadImages(event: any): void {
+    this.adminService.saveManyImage(event.target.files, 'product').subscribe((data) => {
+      const images = data['data'];
+      images.forEach(element => {
+        this.productImages.push(element);
+      });
+    }, (err: HttpErrorResponse) => {
+      this.handleError(err);
+    });
+  }
 }

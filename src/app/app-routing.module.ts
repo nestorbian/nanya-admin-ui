@@ -56,7 +56,7 @@ const routes: Routes = [
   ]},
   { path: 'home-admin',  component: TeaAdminComponent, children: [
     { path: '',  component: HomeCarouseFigureComponent},
-    { path: 'carousel-figure',  component: HomeCarouseFigureComponent },
+    { path: 'category',  component: HomeCarouseFigureComponent },
     { path: 'well-known-tea',  component: WellKnownTeaComponent },
     { path: 'add-well-known-tea',  component: WellKnownTeaAddComponent },
     { path: 'edit-well-known-tea/:id',  component: WellKnownTeaEditComponent },

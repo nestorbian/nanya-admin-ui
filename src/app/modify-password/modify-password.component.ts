@@ -19,6 +19,7 @@ export class ModifyPasswordComponent implements OnInit {
   // 错误提示弹窗
   isShowErrorTip = false;
   errorMessage: string;
+
   constructor(private userService: UserService, private router: Router) { }
 
   ngOnInit() {

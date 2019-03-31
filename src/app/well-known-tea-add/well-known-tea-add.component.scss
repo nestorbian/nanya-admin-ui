@@ -6,3 +6,74 @@
         color: #5bc0de;
     }
 }
+
+.well {
+    img, div {
+        height: 150px;
+        width: 150px;
+        background-size: cover;
+        margin: 0 10px 10px 0;
+    }
+    .add-div {
+        background-image: url(/assets/images/add_image.jpg);
+        background-size: cover;
+        cursor: pointer;
+        overflow: hidden;
+        position: relative;
+        z-index: 10px;
+    }
+    .uplaod-image {
+        font-size: 120px;
+        position: absolute;
+        right: 0;
+        cursor: pointer;
+        opacity: 0;
+        filter: alpha(opacity=0);
+    }
+    .image-div {
+        cursor: pointer;
+        background-position: center;
+        background-size: cover;
+        .close {
+            display: none;
+            opacity: 1;
+            color: red;
+            &:hover {
+                color: red;
+            }
+        }
+        &:hover {
+            .close {
+                display: block;
+            }
+        }
+    }
+}
+
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0;
+}
+
+:host ::ng-deep .ui-multiselected-item-token,
+:host ::ng-deep .ui-multiselected-empty-token {
+    padding: 2px 4px;
+    margin: 0 0.286em 0 0;
+    display: inline-block;
+    vertical-align:middle;
+    height: 1.857em;
+}
+
+:host ::ng-deep label.ui-multiselect-label {
+    margin-bottom: 0px !important;
+}
+
+:host ::ng-deep .ui-multiselected-item-token {
+    background: #007ad9;
+    color: #ffffff;
+}
+
+:host ::ng-deep .ui-multiselected-empty-token {
+    background: #d95f00;
+    color: #ffffff;
+}

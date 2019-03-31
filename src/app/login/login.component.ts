@@ -103,7 +103,7 @@ export class LoginComponent implements OnInit {
     }
     this.adminService.getAdminByAdminNameAndPassword(this.userName, this.password).subscribe((data) => {
       if (data['status'] === 0 && data['data']) {
-        this.router.navigate(['/home-admin/carousel-figure']);
+        this.router.navigate(['/home-admin']);
       } else if (data['status'] === 0 && !data['data']) {
         this.errorMessage = '用户名或密码不正确';
         this.showTip();
