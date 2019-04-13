@@ -39,6 +39,12 @@
                 white-space: pre-wrap;
                 word-break: break-all;
             }
+            .category {
+                display: flex;
+                flex-wrap: wrap;
+                border: none;
+                justify-content: center;
+            }
         }
         .home-carousel-figure-img {
             max-width: 180px;

@@ -64,23 +64,23 @@
           <li>
             <a (click)="clearActive();wellKnownTeaActive=true;" [ngClass]="{'active-a': wellKnownTeaActive, 'inactive-a': !wellKnownTeaActive}"
              [routerLink]="['/home-admin/well-known-tea']">
-              主流茶<span class="fa fa-leaf"></span>
+            商品管理<span class="fa fa-leaf"></span>
             </a>
           </li>
           <li>
             <a (click)="clearActive();teaSetNewsActive=true;" [ngClass]="{'active-a': teaSetNewsActive, 'inactive-a': !teaSetNewsActive}"
             [routerLink]="['/home-admin/tea-set-news']">
-            茶具新资讯<span class="glyphicon glyphicon-th-large"></span>
+            物流管理<span class="glyphicon glyphicon-th-large"></span>
             </a>
           </li>
-          <li><a (click)="clearActive();teaSkillActive=true;" [ngClass]="{'active-a': teaSkillActive, 'inactive-a': !teaSkillActive}"
+          <!-- <li><a (click)="clearActive();teaSkillActive=true;" [ngClass]="{'active-a': teaSkillActive, 'inactive-a': !teaSkillActive}"
             [routerLink]="['/home-admin/tea-skill']">泡茶技巧<span class="glyphicon glyphicon-list-alt"></span></a></li>
           <li><a (click)="clearActive();teaLeafNewsActive=true;" [ngClass]="{'active-a': teaLeafNewsActive, 'inactive-a': !teaLeafNewsActive}"
             [routerLink]="['/home-admin/tea-leaf-news']">茶叶资讯<span class="glyphicon glyphicon-cog"></span></a></li>
           <li><a (click)="clearActive();postActive=true;" [ngClass]="{'active-a': postActive, 'inactive-a': !postActive}"
-            [routerLink]="['/home-admin/post']">交流区<span class="fa fa-comments-o" style="font-size: 19px;"></span></a></li>
+            [routerLink]="['/home-admin/post']">交流区<span class="fa fa-comments-o" style="font-size: 19px;"></span></a></li> -->
           <li><a (click)="clearActive();userActive=true;" [ngClass]="{'active-a': userActive, 'inactive-a': !userActive}"
-            [routerLink]="['/home-admin/user-info']">用户管理<span class="glyphicon glyphicon-user"></span></a></li>
+            [routerLink]="['/home-admin/user-info']">订单管理<span class="glyphicon glyphicon-user"></span></a></li>
           <li>
             <a (click)="showChildSettingMenu()" [ngClass]="{'active-a': isShowChildSettingMenu, 'inactive-a': !isShowChildSettingMenu}">个性设置
                 <span class="glyphicon glyphicon-cog"></span>

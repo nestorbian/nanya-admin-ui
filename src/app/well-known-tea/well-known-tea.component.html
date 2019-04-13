@@ -75,8 +75,8 @@
           <td>{{item?.productScene}}</td>
           <td>{{item?.distribution}}</td>
           <td>{{item?.saleVolume}}</td>
-          <td><span *ngFor="let c of item?.categories; let i = index"  class="label label-info" [ngStyle]="{'margin-right': i + 1 == item?.categories.length ? '0px' : '5px'}">{{c.categoryName}}</span></td>
-          <td><img (click)="previewImage(item?.productImages[0].imageUrl)" class="home-carousel-figure-img" [src]="sanitizer.bypassSecurityTrustUrl(item?.productImages[0].imageUrl)" alt="loading"/></td>
+          <td><div class="category"><span *ngFor="let c of item?.categories; let i = index"  class="label label-info" style="margin: 2px 2px 2px 2px">{{c.categoryName}}</span></div></td>
+          <td><img (click)="previewImage(item?.productImages[0]?.imageUrl)" class="home-carousel-figure-img" [src]="sanitizer.bypassSecurityTrustUrl(item?.productImages[0]?.imageUrl)" alt="loading"/></td>
           <td>{{item?.createTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
           <td>{{item?.updateTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
           <td style="white-space: normal !important">
