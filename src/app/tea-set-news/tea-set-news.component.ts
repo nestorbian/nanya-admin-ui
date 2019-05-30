@@ -13,22 +13,20 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class TeaSetNewsComponent implements OnInit {
   // 遮罩层
   isShowBlock = false;
-  // 添加对话框
-  isShowAddModule = false;
-  imageFileName = '上传图片';
-  uploadFont = 'fa fa-plus';
-  // 修改对话框
-  isShowModifyModule = false;
-  teaSetIdForModify: string;
-  // 删除对话框
-  isShowDeleteModule = false;
-  teaSetIdForDelete: string;
-  // 表单信息
-  imageFile: File = null;
-  teaSetName: string;
-  price: number;
-  description: string;
-  goodUrl: string;
+  // 编辑快递单号对话框
+  isShowEditTrackingNumber = false;
+  trackingNumber: string;
+  orderId: string;
+  // 确认收货框
+  isShowConfirmReceive = false;
+  // 确认退款
+  isShowConfirmRefund = false;
+  // 查询信息
+  orderNumber = '';
+  orderStatuses: any[] = [{name: '待支付', code: 'PENDING_PAY'}, {name: '待发货', code: 'PENDING_DELIVERY'},
+  {name: '待收货', code: 'PENDING_RECEIVE'}, {name: '待评价', code: 'PENDING_COMMENT'}, {name: '交易关闭', code: 'CLOSE'},
+  {name: '交易完成', code: 'FINISH'}, {name: '待退款', code: 'PENDING_REFUND'}, {name: '完成退款', code: 'FINISH_REFUND'}];
+  orderStatus: any;
   // 错误提示弹窗
   isShowErrorTip = false;
   errorMessage: string;
@@ -39,7 +37,7 @@ export class TeaSetNewsComponent implements OnInit {
   pageNum = 1;
   pageSize = 5;
   pages: number;
-  teaSetNewsList: any[];
+  orderList: any[];
   // imageUrl: any = this.sanitizer.bypassSecurityTrustUrl('http://localhost:8000/image/chadao.png');
 
   constructor(private adminService: AdminService, private sanitizer: DomSanitizer) { }
@@ -50,34 +48,17 @@ export class TeaSetNewsComponent implements OnInit {
 
   // 加载数据
   onloadData(pageNum: number, pageSize: number): void {
-    this.adminService.findAllTeaSetNews(pageNum, pageSize).subscribe((data) => {
+    const orderQuery = {pageNumber: pageNum, pageSize: pageSize, orderNumber: this.orderNumber,
+      orderStatus: this.orderStatus ? this.orderStatus.code : ''};
+    this.adminService.listOrderByOrderQuery(orderQuery).subscribe((data) => {
       const pageInfo = data['data'];
-      this.teaSetNewsList = pageInfo['list'];
-      this.pages = pageInfo['pages'];
-      this.pageNum = pageInfo['pageNum'];
+      this.pageNum = pageInfo.number + 1;
+      this.pages = pageInfo.totalPages;
+      this.orderList = pageInfo.content;
+      console.log(pageInfo);
     }, (err: HttpErrorResponse) => {
       this.handleError(err);
     });
-  }
-
-  // 选择上传图片
-  onImageUpload(event: any): void {
-    this.imageFile = event.target.files[0];
-    this.imageFileName = this.imageFile.name;
-    this.uploadFont = 'fa fa-upload';
-  }
-
-  // 取消添加对话框
-  cancelAddModule(): void {
-    this.isShowAddModule = false;
-    this.isShowBlock = false;
-    this.uploadFont = 'fa fa-plus';
-    this.imageFileName = '上传图片';
-    this.imageFile = null;
-    this.teaSetName = '';
-    this.price = null;
-    this.description = '';
-    this.goodUrl = '';
   }
 
   // 错误处理
@@ -89,7 +70,7 @@ export class TeaSetNewsComponent implements OnInit {
     } else if (err.status === 404) {
       this.errorMessage = '请求资源未找到';
     } else if (err.status >= 500 && err.status < 600) {
-      this.errorMessage = '服务器内部错误';
+      this.errorMessage = err.error['status'] === 49 ? '服务器内部错误' : err.error['message'];
     } else {
       this.errorMessage = '请求超时';
     }
@@ -128,126 +109,97 @@ export class TeaSetNewsComponent implements OnInit {
     }
   }
 
-  // 显示删除对话框
-  deleteTeaSetNews(teaSetId: string): void {
-    this.teaSetIdForDelete = teaSetId;
+  // 编辑快递单号，弹出编辑框
+  editTrackingNumber(orderId: string): void {
     this.isShowBlock = true;
-    this.isShowDeleteModule = true;
+    this.orderId = orderId;
+    this.isShowEditTrackingNumber = true;
   }
 
-  // 取消删除
-  cancelDeleteModule(): void {
-    this.teaSetIdForDelete = '';
+  // 取消编辑快递单号
+  cancelEditModule(): void {
+    this.isShowEditTrackingNumber = false;
     this.isShowBlock = false;
-    this.isShowDeleteModule = false;
+    this.orderId = '';
+    this.trackingNumber = '';
   }
 
-  // 删除茶具信息
-  confirmDeleteTeaSetNews(): void {
-    this.adminService.deleteTeaSetNewsById(this.teaSetIdForDelete).subscribe((data) => {
-      if (data['status']) {
-        this.isShowBlock = false;
-        this.isShowDeleteModule = false;
-        this.successMessage = '删除成功';
+  // 确认编辑快递单号
+  saveEditModule(): void {
+    this.adminService.updateTrackingNumber(this.orderId, this.trackingNumber).subscribe((data) => {
+        this.cancelEditModule();
+        this.successMessage = '编辑成功';
         this.showSuccessTip();
         this.onloadData(this.pageNum, this.pageSize);
-      } else {
-        this.errorMessage = data['message'];
-        this.showErrorTip();
-      }
     }, (err: HttpErrorResponse) => {
-      this.handleError(err);
+        this.handleError(err);
     });
   }
 
-  // 提交添加茶具表单
-  addTeaSetNews(): void {
-    if (!this.imageFile) {
-      this.errorMessage = '茶具图片不能为空';
-      this.showErrorTip();
-    } else {
-      this.adminService.addTeaSetNews(this.imageFile, this.teaSetName, this.price, this.description, this.goodUrl).subscribe((data) => {
-        if (data['status']) {
-          this.cancelAddModule();
-          this.successMessage = '添加成功';
-          this.showSuccessTip();
-          this.onloadData(1, this.pageSize);
-        } else {
-          this.errorMessage = data['message'];
-          this.showErrorTip();
-        }
-      }, (err: HttpErrorResponse) => {
-        this.handleError(err);
-      });
-    }
+  query(event): void {
+    this.onloadData(this.pageNum, this.pageSize);
   }
 
-  // 显示修改的模块
-  showModifyModule(teaSetNews: any): void {
-    this.teaSetIdForModify = teaSetNews.teaSetId;
-    this.uploadFont = 'fa fa-upload';
-    const list = teaSetNews.imagePath.split('_');
-    this.imageFileName = list[list.length - 1];
-    this.teaSetName = teaSetNews.teaSetName;
-    this.price = teaSetNews.price;
-    this.description = teaSetNews.description;
-    this.goodUrl = teaSetNews.goodUrl;
-    this.isShowModifyModule = true;
+  // 弹出确认收货框
+  popupConfirmReceive(orderId: string): void {
+    this.isShowConfirmReceive = true;
     this.isShowBlock = true;
+    this.orderId = orderId;
   }
 
-  // 提交修改茶具表单
-  modifyTeaSetNews(): void {
-    this.adminService.updateTeaSetNewsById(this.teaSetIdForModify, this.teaSetName, this.imageFile, this.price, this.description,
-       this.goodUrl).subscribe((data) => {
-        if (data['status']) {
-          this.cancelModifyModule();
-          this.successMessage = '修改成功';
-          this.showSuccessTip();
-          this.onloadData(this.pageNum, this.pageSize);
-        } else {
-          this.errorMessage = data['message'];
-          this.showErrorTip();
-        }
-      }, (err: HttpErrorResponse) => {
-          this.handleError(err);
-      });
+  // 提交确认收货框
+  confirmReceive(): void {
+    this.adminService.confirmProduct(this.orderId).subscribe((data) => {
+      this.cancelConfirmReceive();
+      this.successMessage = '修改成功';
+      this.showSuccessTip();
+      this.onloadData(this.pageNum, this.pageSize);
+    }, (err: HttpErrorResponse) => {
+        this.handleError(err);
+    });
   }
 
-  // 取消修改茶具
-  cancelModifyModule(): void {
-    this.isShowModifyModule = false;
+  // 取消确认收货框
+  cancelConfirmReceive(): void {
+    this.isShowConfirmReceive = false;
     this.isShowBlock = false;
-    this.uploadFont = 'fa fa-plus';
-    this.imageFileName = '上传图片';
-    this.imageFile = null;
-    this.teaSetName = '';
-    this.price = null;
-    this.description = '';
-    this.goodUrl = '';
+    this.orderId = '';
   }
 
-  // 只能输入数字
-  removeChar(event: any): boolean {
-    const code = event.keyCode;
-    if (code >= 48 && code <= 57 || code === 46) {
-      return true;
-    } else {
-      return false;
-    }
+  // 弹出确认退款框
+  popupConfirmRefund(orderId: string): void {
+    this.isShowConfirmRefund = true;
+    this.isShowBlock = true;
+    this.orderId = orderId;
   }
 
-  removeInvalid(event: any): void {
-    // 先把非数字的都替换掉，除了数字和.
-    event.target.value = event.target.value.replace(/[^\d.]/g, '');
-    // 必须保证第一个为数字而不是.
-    event.target.value = event.target.value.replace(/^\./g, '');
-    // 保证只有出现一个.而没有多个.
-    event.target.value = event.target.value.replace(/\.{2,}/g, '.');
-    // 保证.只出现一次，而不能出现两次以上
-    event.target.value = event.target.value.replace('.', '$#$').replace(/\./g, '').replace('$#$', '.');
-    // 保证.只后面只能出现两位有效数字
-    event.target.value = event.target.value.replace(/([0-9]+\.[0-9]{2})[0-9]*/, '$1');
+  // 取消确认退款
+  cancelConfirmRefund(): void {
+    this.isShowConfirmRefund = false;
+    this.isShowBlock = false;
+    this.orderId = '';
+  }
+
+  // 确认退款
+  confirmRefund(): void {
+    this.adminService.confirmRefund(this.orderId).subscribe((data) => {
+      this.cancelConfirmRefund();
+      this.successMessage = '退款成功';
+      this.showSuccessTip();
+      this.onloadData(this.pageNum, this.pageSize);
+    }, (err: HttpErrorResponse) => {
+        this.handleError(err);
+    });
+  }
+
+  // 查看物流
+  findLogistics(): void {
+    window.open('http://www.sf-express.com/cn/sc/');
+  }
+
+  // 打印
+  printOrder(orderId: string): void {
+    window.open(`/print-order/${orderId}`);
   }
 
 }

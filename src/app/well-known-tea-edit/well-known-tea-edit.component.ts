@@ -110,6 +110,15 @@ export class WellKnownTeaEditComponent implements OnInit {
     }
   }
 
+  onlyNumber(event: any): boolean {
+    const code = event.keyCode;
+    if (code >= 48 && code <= 57) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   removeInvalid(event: any): void {
     // 先把非数字的都替换掉，除了数字和.
     event.target.value = event.target.value.replace(/[^\d.]/g, '');

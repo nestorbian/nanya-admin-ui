@@ -38,23 +38,6 @@
       </div>
         <p-scrollPanel [style]="{width: 'calc(100% + 2px)',border: 'none', height: 'calc(100% + 18px)', overflow: 'scrollbars-none', background: 'transparent'}" styleClass="custom">
         <ul class="menu-ul">
-          <!-- <li>
-            <a (click)="showChildMenu()" [ngClass]="{'active-a': isShowChildMenu, 'inactive-a': !isShowChildMenu}">主页管理
-              <span class="glyphicon glyphicon-home"></span><span class="glyphicon glyphicon-menu-down menu-down"></span>
-            </a>
-            <ul [ngClass]="{'child-ul': isShowChildMenu, 'close-child-ul': !isShowChildMenu}" style="margin-top:0;">
-              <li>
-                <a (click)="clearActive();carouselFigureActive=true;isShowChildMenu=true" [class.item-active]="carouselFigureActive" [routerLink]="['/home-admin/carousel-figure']">
-                  轮播图<span class="fa fa-laptop"></span>
-                </a>
-              </li>
-              <li>
-                <a (click)="clearActive();wellKnownTeaActive=true;isShowChildMenu=true" [class.item-active]="wellKnownTeaActive" [routerLink]="['/home-admin/well-known-tea']">
-                  主流茶<span class="fa fa-leaf"></span>
-                </a>
-              </li>
-            </ul>
-          </li> -->
           <li>
             <a (click)="clearActive();categoryActive=true;" [ngClass]="{'active-a': categoryActive, 'inactive-a': !categoryActive}"
             [routerLink]="['/home-admin/category']">
@@ -63,24 +46,16 @@
           </li>
           <li>
             <a (click)="clearActive();wellKnownTeaActive=true;" [ngClass]="{'active-a': wellKnownTeaActive, 'inactive-a': !wellKnownTeaActive}"
-             [routerLink]="['/home-admin/well-known-tea']">
+             [routerLink]="['/home-admin/product']">
             商品管理<span class="fa fa-leaf"></span>
             </a>
           </li>
           <li>
             <a (click)="clearActive();teaSetNewsActive=true;" [ngClass]="{'active-a': teaSetNewsActive, 'inactive-a': !teaSetNewsActive}"
-            [routerLink]="['/home-admin/tea-set-news']">
-            物流管理<span class="glyphicon glyphicon-th-large"></span>
+            [routerLink]="['/home-admin/order']">
+            订单管理<span class="glyphicon glyphicon-th-large"></span>
             </a>
           </li>
-          <!-- <li><a (click)="clearActive();teaSkillActive=true;" [ngClass]="{'active-a': teaSkillActive, 'inactive-a': !teaSkillActive}"
-            [routerLink]="['/home-admin/tea-skill']">泡茶技巧<span class="glyphicon glyphicon-list-alt"></span></a></li>
-          <li><a (click)="clearActive();teaLeafNewsActive=true;" [ngClass]="{'active-a': teaLeafNewsActive, 'inactive-a': !teaLeafNewsActive}"
-            [routerLink]="['/home-admin/tea-leaf-news']">茶叶资讯<span class="glyphicon glyphicon-cog"></span></a></li>
-          <li><a (click)="clearActive();postActive=true;" [ngClass]="{'active-a': postActive, 'inactive-a': !postActive}"
-            [routerLink]="['/home-admin/post']">交流区<span class="fa fa-comments-o" style="font-size: 19px;"></span></a></li> -->
-          <li><a (click)="clearActive();userActive=true;" [ngClass]="{'active-a': userActive, 'inactive-a': !userActive}"
-            [routerLink]="['/home-admin/user-info']">订单管理<span class="glyphicon glyphicon-user"></span></a></li>
           <li>
             <a (click)="showChildSettingMenu()" [ngClass]="{'active-a': isShowChildSettingMenu, 'inactive-a': !isShowChildSettingMenu}">个性设置
                 <span class="glyphicon glyphicon-cog"></span>

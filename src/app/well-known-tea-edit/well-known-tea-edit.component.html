@@ -18,7 +18,7 @@
   <!-- 主流茶edit -->
   <div class="head clearfix">
     <span class="head-title">修改商品模块</span>
-    <button class="btn btn-info fr" [routerLink]="['/home-admin/well-known-tea']">返回</button>
+    <button class="btn btn-info fr" [routerLink]="['/home-admin/product']">返回</button>
   </div>
   <hr />
   <div class="row">
@@ -51,7 +51,7 @@
           <label for="productStock">库存<span class="red">*</span>：</label>
           <input type="number" class="form-control" name="productStock" [(ngModel)]="productStock" #localProductStock="ngModel" 
           id="productStock" placeholder="限整数" required [class.red-border]="localProductStock.touched && localProductStock.invalid" 
-          (keypress)="removeChar($event)" (input)="removeInvalid($event)"/>
+          (keypress)="onlyNumber($event)"/>
         </div>
         <div class="form-group">
           <label for="flowerMaterial">花材<span class="red">*</span>：</label>
@@ -95,7 +95,7 @@
         </div>
         <div class="form-group">
           <p-button type="submit" icon="fa fa-fw fa-check" label="提交" [disabled]="!productForm.form.valid"></p-button>
-          <p-button type="button" icon="fa fa-fw fa-close" label="返回" [routerLink]="['/home-admin/well-known-tea']"></p-button>
+          <p-button type="button" icon="fa fa-fw fa-close" label="返回" [routerLink]="['/home-admin/product']"></p-button>
         </div>
       </form>
     </div>

@@ -1,0 +1,161 @@
+<body data-spm="1">
+  <div id="page">
+    <div id="content" class="grid-c">
+      <div id="address" class="address" style="margin-top: 20px;" data-spm="2">
+        <form name="addrForm" id="addrForm">
+          <h3>收货人信息
+          </h3>
+          <ul id="address-list" class="address-list">
+            <li class="J_Addr J_MakePoint clearfix  J_DefaultAddr " >
+              <s class="J_Marker marker"></s>
+              <span class="marker-tip">寄送至</span>
+              <div class="address-info">
+                <label for="addrId_674944241" class="user-address">
+                  {{order?.area}} {{order?.addressDetail}}({{order?.username}} 收) {{order?.phoneNumber}}
+                </label>
+              </div>
+            </li>
+          </ul>
+          <ul id="J_MoreAddress" class="address-list hidden">
+          </ul>
+          <div class="address-bar">
+
+          </div>
+
+        </form>
+      </div>
+      <form id="J_Form" name="J_Form" method="post">
+        <div>
+          <h3 class="dib">确认订单信息</h3>
+          <table cellspacing="0" cellpadding="0" class="order-table" id="J_OrderTable" summary="统一下单订单信息区域">
+            <caption style="display: none">统一下单订单信息区域</caption>
+            <thead>
+              <tr>
+                <th class="s-title">店铺宝贝
+                  <hr>
+                </th>
+                <th class="s-price">单价(元)
+                  <hr>
+                </th>
+                <th class="s-amount">数量
+                  <hr>
+                </th>
+                <th class="s-agio">优惠方式(元)
+                  <hr>
+                </th>
+                <th class="s-total">小计(元)
+                  <hr>
+                </th>
+              </tr>
+            </thead>
+            <tbody data-spm="3" class="J_Shop" data-tbcbid="0" data-outorderid="47285539868" data-isb2c="false" data-postmode="2" data-sellerid="1704508670">
+              <tr class="item" data-lineid="19614514619:31175333266:35612993875" data-pointrate="0">
+                <td class="s-title">
+                  <img src="{{order?.productImageUrl}}" class="itempic">
+                  <span class="title J_MakePoint">{{order?.productName}}</span>
+
+                  <div class="props">
+                    <span>{{order?.productDescription}}</span>
+                  </div>
+                  <div>
+                    <span style="color:gray;">卖家将会在</span>
+                    <span style="color:red;">【{{order?.expectedDeliveryTime}}】</span>
+                    <span style="color:gray;">送达</span>
+                  </div>
+                </td>
+                <td class="s-price">
+
+                  <span class="price ">
+                    <em class="style-normal-small-black J_ItemPrice">{{order?.productPrice | number: "0.2"}}</em>
+                  </span>
+                  <input type="hidden" name="costprice" class="J_CostPrice">
+                </td>
+                <td class="s-amount" data-point-url="">
+                  <input type="hidden" class="J_Quantity" value="1" name="19614514619_31175333266_35612993875_quantity">{{order?.buyAmount}}
+
+                </td>
+                <td class="s-agio">
+                  <div class="J_Promotion promotion" data-point-url="">无优惠</div>
+                </td>
+                <td class="s-total">
+
+                  <span class="price ">
+                    <em class="style-normal-bold-red J_ItemTotal ">{{order?.payAmount}}</em>
+                  </span>
+                  <input id="furniture_service_list_b_47285539868" type="hidden" name="furniture_service_list_b_47285539868">
+                </td>
+              </tr>
+
+
+
+              <tr class="item-service">
+                <td colspan="5" class="servicearea" style="display: none"></td>
+              </tr>
+
+              <tr class="blue-line" style="height: 2px;">
+                <td colspan="5"></td>
+              </tr>
+              <tr class="other other-line">
+                <td colspan="5">
+                  <ul class="dib-wrap">
+                    <li class="dib user-info">
+                      <ul class="wrap">
+                        <li>
+                          <div class="field gbook">
+                            <label class="label">给卖家备注：</label>
+                            {{order?.remark}}
+                          </div>
+                          <div class="field gbook">
+                            <label class="label">给TA的留言 :</label>
+                            {{order?.leaveMessage}}
+                          </div>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="dib extra-info">
+                      <div style="width:50%;height:50%;">
+                        <!-- <img src="./demo_files/360f8607f6b54d9f9e11ad69622a3ccd.JPG"> -->
+                      </div>
+                    </li>
+                  </ul>
+                </td>
+              </tr>
+
+              <tr class="shop-total blue-line">
+                <td colspan="5">店铺合计(
+                  <span class="J_Exclude">不</span>含运费
+                  <span class="J_ServiceText">，服务费</span>)：
+                  <span class="price g_price ">
+                    <span>¥</span>
+                    <em class="style-middle-bold-red J_ShopTotal">{{order?.payAmount}}</em>
+                  </span>
+                  <input type="hidden" name="1704508670:2|creditcard" value="false">
+                  <input type="hidden" id="J_IsLadderGroup" name="isLadderGroup" value="false">
+
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="5">
+
+
+                </td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+
+
+      </form>
+    </div>
+
+    <div id="footer"></div>
+  </div>
+  <div style="text-align:center">
+    <p>来源:
+      <a target="_blank">萌考科技提供技术支持，联系方式：wuyh0118@qq.com</a>
+    </p>
+  </div>
+
+  <button class="btn btn-info print-btn" (click)="printOrder()" *ngIf="isShowPrintBtn"><span class="glyphicon glyphicon-print"></span>&nbsp;打印</button>

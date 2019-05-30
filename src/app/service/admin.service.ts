@@ -11,7 +11,7 @@ export class AdminService {
 
   constructor(private http: HttpClient, private ipService: IpService) { }
 
-  // naya
+  // nanya
   saveManyImage(imageFiles: File[], type: string): Observable<any> {
     const formData = new FormData();
     for (let i = 0; i < imageFiles.length; i ++) {
@@ -82,6 +82,26 @@ export class AdminService {
 
   modifyProduct(product: any): Observable<any> {
     return this.http.put('/nanyahuayi/admin/products', product);
+  }
+
+  listOrderByOrderQuery(orderQuery: any): Observable<any> {
+    return this.http.get('/nanyahuayi/admin/orders', {params: orderQuery});
+  }
+
+  updateTrackingNumber(orderId: string, trackingNumber: string): Observable<any> {
+    return this.http.put('/nanyahuayi/admin/orders', {orderId: orderId, trackingNumber: trackingNumber});
+  }
+
+  confirmProduct(orderId: string): Observable<any> {
+    return this.http.put(`/nanyahuayi/admin/orders/confirm-product?id=${orderId}`, null);
+  }
+
+  confirmRefund(orderId: string): Observable<any> {
+    return this.http.put(`/nanyahuayi/admin/orders/confirm-refund?id=${orderId}`, null);
+  }
+
+  getOrderInfo(orderId: string): Observable<any> {
+    return this.http.get(`/nanyahuayi/admin/orders/detail?id=${orderId}`);
   }
 
   /**

@@ -125,7 +125,7 @@ export class WellKnownTeaComponent implements OnInit {
   }
 
   editWellKnownTea(productId: string): void {
-    this.router.navigate(['/home-admin/edit-well-known-tea', productId]);
+    this.router.navigate(['/home-admin/edit-product', productId]);
   }
 
   // 预览图片

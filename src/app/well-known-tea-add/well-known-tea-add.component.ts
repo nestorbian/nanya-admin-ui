@@ -45,8 +45,18 @@ export class WellKnownTeaAddComponent implements OnInit {
 
   // 只能输入数字
   removeChar(event: any): boolean {
+    console.log('code: ' + event.keyCode);
     const code = event.keyCode;
     if (code >= 48 && code <= 57 || code === 46) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  onlyNumber(event: any): boolean {
+    const code = event.keyCode;
+    if (code >= 48 && code <= 57) {
       return true;
     } else {
       return false;
@@ -97,7 +107,7 @@ export class WellKnownTeaAddComponent implements OnInit {
     setTimeout(() => {
       this.successMessage = '';
       this.isShowSuccessTip = false;
-      this.router.navigate(['/home-admin/well-known-tea']);
+      this.router.navigate(['/home-admin/product']);
     }, 1000);
   }
 
