@@ -16,6 +16,12 @@
           <div class="w10"></div>{{successMessage}}
       </div>
     </div>
+
+      <!-- 图片预览 -->
+    <div id="myModal" class="modal">
+      <span class="close" (click)="closePreview()">×</span>
+      <img class="modal-content" [src]="previewUrl" alt="loading">
+    </div>
   
     <!-- 遮罩层 -->
     <p-blockUI [blocked]="isShowBlock"></p-blockUI>
@@ -26,7 +32,7 @@
         <span>编辑快递单号</span>
       </div>
       <div class="panel-body">
-          <input type="text" class="form-control" maxlength="50" [(ngModel)]="trackingNumber"/>
+          <input type="text" class="form-control" maxlength="50" [(ngModel)]="trackingNumber" id="trackingNumber" autofocus="autofocus"/>
       </div>
       <div class="panel-footer clearfix">
         <button class="btn btn-default fr" type="button" (click)="cancelEditModule()">取消</button>

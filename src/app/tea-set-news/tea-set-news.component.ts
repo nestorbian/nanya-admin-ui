@@ -39,6 +39,8 @@ export class TeaSetNewsComponent implements OnInit {
   pages: number;
   orderList: any[];
   // imageUrl: any = this.sanitizer.bypassSecurityTrustUrl('http://localhost:8000/image/chadao.png');
+  // 预览图片
+  previewUrl: string;
 
   constructor(private adminService: AdminService, private sanitizer: DomSanitizer) { }
 
@@ -114,6 +116,10 @@ export class TeaSetNewsComponent implements OnInit {
     this.isShowBlock = true;
     this.orderId = orderId;
     this.isShowEditTrackingNumber = true;
+    setTimeout(() => {
+      const item = document.getElementById('trackingNumber');
+      item.focus();
+    }, 100);
   }
 
   // 取消编辑快递单号
@@ -199,7 +205,20 @@ export class TeaSetNewsComponent implements OnInit {
 
   // 打印
   printOrder(orderId: string): void {
-    window.open(`/print-order/${orderId}`);
+    window.open(`/#/print-order/${orderId}`);
+  }
+
+  // 预览图片
+  previewImage(url: string): void {
+    this.previewUrl = url;
+    const modal = document.getElementById('myModal');
+    modal.style.display = 'flex';
+  }
+
+  // 关闭预览图片
+  closePreview(): void {
+    const modal = document.getElementById('myModal');
+    modal.style.display = 'none';
   }
 
 }
