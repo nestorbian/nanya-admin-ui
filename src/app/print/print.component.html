@@ -51,7 +51,7 @@
             <tbody data-spm="3" class="J_Shop" data-tbcbid="0" data-outorderid="47285539868" data-isb2c="false" data-postmode="2" data-sellerid="1704508670">
               <tr class="item" data-lineid="19614514619:31175333266:35612993875" data-pointrate="0">
                 <td class="s-title">
-                  <img src="{{order?.productImageUrl}}" class="itempic">
+                  <img src="../../assets/images/login_logo.jpg" class="itempic">
                   <span class="title J_MakePoint">{{order?.productName}}</span>
 
                   <div class="props">
@@ -103,18 +103,18 @@
                         <li>
                           <div class="field gbook">
                             <label class="label">给卖家备注：</label>
-                            {{order?.remark}}
+                            <span style="color:red;">{{order?.remark}}</span>
                           </div>
                           <div class="field gbook">
                             <label class="label">给TA的留言 :</label>
-                            {{order?.leaveMessage}}
+                            <span style="color:red;">{{order?.leaveMessage}}</span>
                           </div>
                         </li>
                       </ul>
                     </li>
                     <li class="dib extra-info">
                       <div style="width:50%;height:50%;">
-                        <!-- <img src="./demo_files/360f8607f6b54d9f9e11ad69622a3ccd.JPG"> -->
+                        <img src="{{order?.productImageUrl}}" style="width: 100%">
                       </div>
                     </li>
                   </ul>
