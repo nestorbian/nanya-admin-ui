@@ -96,7 +96,8 @@ export class WellKnownTeaEditComponent implements OnInit {
     setTimeout(() => {
       this.successMessage = '';
       this.isShowSuccessTip = false;
-      this.router.navigate(['/home-admin/well-known-tea']);
+      history.back();
+      // this.router.navigate(['/home-admin/product']);
     }, 2000);
   }
 
@@ -151,7 +152,6 @@ export class WellKnownTeaEditComponent implements OnInit {
       productStock: this.productStock, flowerMaterial: this.flowerMaterial, productPackage: this.productPackage,
       productScene: this.productScene, distribution: this.distribution, productImages: this.productImages,
       categories: this.selectedCategories};
-      console.log(product);
     this.adminService.modifyProduct(product).subscribe((data) => {
         this.successMessage = '修改成功';
         this.showSuccessTip();
@@ -162,7 +162,6 @@ export class WellKnownTeaEditComponent implements OnInit {
 
   // 删除图片
   deleteImage(index: number): void {
-    console.log('index---' + index);
     this.productImages.splice(index, 1);
   }
 
