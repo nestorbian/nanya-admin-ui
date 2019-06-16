@@ -27,7 +27,7 @@
     <p-blockUI [blocked]="isShowBlock"></p-blockUI>
   
     <!-- 编辑快递单号 -->
-    <div class="panel panel-default add-module" *ngIf="isShowEditTrackingNumber">
+    <div class="panel panel-default add-module" *ngIf="isShowEditTrackingNumber" (keypress)="confirmTrackingNumber($event)">
       <div class="panel-heading">
         <span>编辑快递单号</span>
       </div>
@@ -83,15 +83,8 @@
             <th width="50px">序号</th>
             <th width="180px">订单编号</th>
             <th width="120px">商品名称</th>
-            <th width="300px">商品描述</th>
-            <th width="200px">商品图片</th>
-            <th width="100px">商品价格</th>
-            <th width="150px">收货人</th>
-            <th width="200px">地区</th>
-            <th width="200px">详细地址</th>
-            <th width="150px">手机号码</th>
+            <th width="600px">收货地址</th>
             <th width="200px">期望配送时间</th>
-            <th width="200px">标签</th>
             <th width="200px">备注</th>
             <th width="200px">留言</th>
             <th width="100px">购买数量</th>
@@ -109,15 +102,8 @@
             <td>{{i + 1}}</td>
             <td>{{item?.orderNumber}}</td>
             <td>{{item?.productName}}</td>
-            <td>{{item?.productDescription}}</td>
-            <td><img (click)="previewImage(item?.productImageUrl)" class="home-carousel-figure-img" [src]="sanitizer.bypassSecurityTrustUrl(item?.productImageUrl)" alt="loading"/></td>
-            <td>￥{{item?.productPrice | number:"0.2"}}</td>
-            <td>{{item?.username}}</td>
-            <td>{{item?.area}}</td>
-            <td>{{item?.addressDetail}}</td>
-            <td>{{item?.phoneNumber}}</td>
+            <td>{{item?.area}}&nbsp;{{item?.addressDetail}}&nbsp;{{item?.username}}&nbsp;{{item?.phoneNumber}}</td>
             <td>{{item?.expectedDeliveryTime}}</td>
-            <td>{{item?.label}}</td>
             <td>{{item?.remark}}</td>
             <td>{{item?.leaveMessage}}</td>
             <td>{{item?.buyAmount}}</td>

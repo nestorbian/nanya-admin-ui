@@ -221,4 +221,10 @@ export class TeaSetNewsComponent implements OnInit {
     modal.style.display = 'none';
   }
 
+  confirmTrackingNumber(event): void {
+    if (event.keyCode === 13) {
+      this.saveEditModule();
+    }
+  }
+
 }
