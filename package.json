@@ -33,7 +33,7 @@
     "zone.js": "^0.8.19"
   },
   "devDependencies": {
-    "@angular/cli": "1.6.8",
+    "@angular/cli": "15.0.4",
     "@angular/compiler-cli": "^5.2.0",
     "@angular/language-service": "^5.2.0",
     "@types/bootstrap": "^3.3.39",
@@ -51,7 +51,7 @@
     "karma-jasmine-html-reporter": "^0.2.2",
     "node-sass": "^4.7.2",
     "protractor": "~5.1.2",
-    "sass-loader": "^6.0.7",
+    "sass-loader": "^13.2.0",
     "ts-node": "~4.1.0",
     "tslint": "~5.9.1",
     "typescript": "~2.5.3"
